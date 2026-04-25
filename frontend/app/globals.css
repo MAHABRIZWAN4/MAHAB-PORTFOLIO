@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 10 10 10;
+    --foreground: 250 250 250;
+    --accent: 99 102 241;
+    --accent-light: 129 140 248;
+    --accent-dark: 79 70 229;
+    --secondary: 20 184 166;
+    --secondary-light: 45 212 191;
+    --secondary-dark: 13 148 136;
+    --muted: 26 26 26;
+    --muted-foreground: 161 161 170;
+    --border: 39 39 42;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    background-image:
+      linear-gradient(to right, rgba(39, 39, 42, 0.3) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(39, 39, 42, 0.3) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent;
+  }
+
+  /* Selection Color */
+  ::selection {
+    @apply bg-accent text-white;
+  }
+
+  ::-moz-selection {
+    @apply bg-accent text-white;
+  }
+}
+
+@layer components {
+  /* Glassmorphism Effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-md border border-border;
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent;
+  }
+
+  /* Button Base */
+  .btn {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent hover:bg-accent-dark text-white;
+  }
+
+  .btn-secondary {
+    @apply btn bg-secondary hover:bg-secondary-dark text-white;
+  }
+
+  .btn-outline {
+    @apply btn border border-accent text-accent hover:bg-accent hover:text-white;
+  }
+
+  /* Card */
+  .card {
+    @apply glass rounded-xl p-6 hover:border-accent/50 transition-all duration-300;
+  }
+}
