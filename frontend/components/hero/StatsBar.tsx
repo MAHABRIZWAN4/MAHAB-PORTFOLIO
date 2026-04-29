@@ -24,12 +24,22 @@ export default function StatsBar() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.9 + index * 0.1 }}
           whileHover={{ scale: 1.05 }}
-          className="glass rounded-lg p-4 text-center border border-border hover:border-accent/50 transition-colors"
+          className="rounded-lg p-4 text-center border transition-colors"
+          style={{
+            backgroundColor: "var(--card)",
+            borderColor: "var(--border)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "var(--accent)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "var(--border)";
+          }}
         >
           <div className="text-2xl md:text-3xl font-heading font-bold gradient-text">
             {stat.value}
           </div>
-          <div className="text-sm text-muted-foreground mt-1">
+          <div className="text-sm mt-1" style={{ color: "var(--foreground-muted)" }}>
             {stat.label}
           </div>
         </motion.div>

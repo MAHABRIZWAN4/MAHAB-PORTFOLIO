@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 const techBadges = [
   { name: "Next.js", color: "#6366F1", angle: 0 },
@@ -11,6 +12,15 @@ const techBadges = [
 
 export default function MRMonogram() {
   const [isHovered, setIsHovered] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const centerFill = mounted && theme === "light" ? "#FFFFFF" : "#1A1A1A";
+  const centerStroke = mounted && theme === "light" ? "#E5E7EB" : "#27272A";
 
   return (
     <motion.div
@@ -126,7 +136,7 @@ export default function MRMonogram() {
           </motion.g>
 
           {/* Center Circle with MR */}
-          <circle cx="200" cy="200" r="80" fill="#1A1A1A" stroke="#27272A" strokeWidth="2" />
+          <circle cx="200" cy="200" r="80" fill={centerFill} stroke={centerStroke} strokeWidth="2" />
           <text
             x="200"
             y="220"
@@ -155,31 +165,15 @@ export default function MRMonogram() {
         </svg>
 
         {/* Orbiting Tech Badges */}
-        {techBadges.map((badge, index) => (
-          <motion.div
-            key={badge.name}
-            animate={{
-              rotate: 360,
-            }}
-            transition={{
-              duration: isHovered ? 15 : 30,
-              repeat: Infinity,
-              ease: "linear",
-              delay: index * 0.5,
-            }}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: "220px",
-              height: "220px",
-              marginLeft: "-110px",
-              marginTop: "-110px",
-            }}
-          >
+        {techBadges.map((badge, index) => {
+          const badgeX = Math.round((50 + 50 * Math.cos((badge.angle * Math.PI) / 180)) * 100) / 100;
+          const badgeY = Math.round((50 + 50 * Math.sin((badge.angle * Math.PI) / 180)) * 100) / 100;
+
+          return (
             <motion.div
+              key={badge.name}
               animate={{
-                rotate: -360,
+                rotate: 360,
               }}
               transition={{
                 duration: isHovered ? 15 : 30,
@@ -189,23 +183,44 @@ export default function MRMonogram() {
               }}
               style={{
                 position: "absolute",
-                top: `${50 + 50 * Math.sin((badge.angle * Math.PI) / 180)}%`,
-                left: `${50 + 50 * Math.cos((badge.angle * Math.PI) / 180)}%`,
-                transform: "translate(-50%, -50%)",
+                top: "50%",
+                left: "50%",
+                width: "220px",
+                height: "220px",
+                marginLeft: "-110px",
+                marginTop: "-110px",
               }}
             >
-              <motion.div
-                whileHover={{ scale: 1.2 }}
-                className="px-3 py-1.5 rounded-full text-xs font-medium text-white shadow-lg"
+              <div
                 style={{
-                  backgroundColor: badge.color,
+                  position: "absolute",
+                  top: `${badgeY}%`,
+                  left: `${badgeX}%`,
+                  transform: "translate(-50%, -50%)",
                 }}
               >
-                {badge.name}
-              </motion.div>
+                <motion.div
+                  animate={{
+                    rotate: -360,
+                  }}
+                  transition={{
+                    duration: isHovered ? 15 : 30,
+                    repeat: Infinity,
+                    ease: "linear",
+                    delay: index * 0.5,
+                  }}
+                  whileHover={{ scale: 1.2 }}
+                  className="px-3 py-1.5 rounded-full text-xs font-medium text-white shadow-lg cursor-pointer"
+                  style={{
+                    backgroundColor: badge.color,
+                  }}
+                >
+                  {badge.name}
+                </motion.div>
+              </div>
             </motion.div>
-          </motion.div>
-        ))}
+          );
+        })}
       </motion.div>
     </motion.div>
   );

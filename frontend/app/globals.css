@@ -4,17 +4,33 @@
 
 @layer base {
   :root {
-    --background: 10 10 10;
-    --foreground: 250 250 250;
-    --accent: 99 102 241;
-    --accent-light: 129 140 248;
-    --accent-dark: 79 70 229;
-    --secondary: 20 184 166;
-    --secondary-light: 45 212 191;
-    --secondary-dark: 13 148 136;
-    --muted: 26 26 26;
-    --muted-foreground: 161 161 170;
-    --border: 39 39 42;
+    --background: #F8F9FA;
+    --background-secondary: #FFFFFF;
+    --foreground: #0A0A0A;
+    --foreground-secondary: #374151;
+    --foreground-muted: #6B7280;
+    --accent: #6366F1;
+    --accent-teal: #14B8A6;
+    --border: #E5E7EB;
+    --card: #FFFFFF;
+    --card-border: #E5E7EB;
+    --badge-bg: #F3F4F6;
+    --badge-text: #374151;
+  }
+
+  .dark {
+    --background: #0A0A0A;
+    --background-secondary: #111111;
+    --foreground: #F9FAFB;
+    --foreground-secondary: #D1D5DB;
+    --foreground-muted: #9CA3AF;
+    --accent: #6366F1;
+    --accent-teal: #14B8A6;
+    --border: #1F2937;
+    --card: #111111;
+    --card-border: #1F2937;
+    --badge-bg: #1F2937;
+    --badge-text: #D1D5DB;
   }
 
   * {
@@ -26,7 +42,12 @@
   }
 
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply font-body antialiased;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  .dark body {
     background-image:
       linear-gradient(to right, rgba(39, 39, 42, 0.3) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(39, 39, 42, 0.3) 1px, transparent 1px);
@@ -40,36 +61,66 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-background;
+    background-color: var(--background);
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-muted-foreground rounded-full;
+    background-color: var(--foreground-muted);
+    border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-accent;
+    background-color: var(--accent);
   }
 
   /* Selection Color */
   ::selection {
-    @apply bg-accent text-white;
+    background-color: var(--accent);
+    color: white;
   }
 
   ::-moz-selection {
-    @apply bg-accent text-white;
+    background-color: var(--accent);
+    color: white;
+  }
+
+  /* Ambient Orb Animations */
+  @keyframes orb-float-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 30px) scale(0.95); }
+  }
+
+  @keyframes orb-float-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-30px, 20px) scale(1.05); }
+    66% { transform: translate(20px, -30px) scale(0.95); }
+  }
+
+  @keyframes orb-pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
   }
 }
 
 @layer components {
   /* Glassmorphism Effect */
   .glass {
-    @apply bg-background/80 backdrop-blur-md border border-border;
+    background-color: rgba(var(--background-rgb), 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+  }
+
+  .dark .glass {
+    background-color: rgba(10, 10, 10, 0.8);
   }
 
   /* Gradient Text */
   .gradient-text {
-    @apply bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent;
+    background: linear-gradient(to right, var(--accent), var(--accent-teal));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   /* Button Base */
@@ -78,19 +129,34 @@
   }
 
   .btn-primary {
-    @apply btn bg-accent hover:bg-accent-dark text-white;
+    background-color: var(--accent);
+    color: white;
   }
 
-  .btn-secondary {
-    @apply btn bg-secondary hover:bg-secondary-dark text-white;
+  .btn-primary:hover {
+    filter: brightness(0.9);
   }
 
   .btn-outline {
-    @apply btn border border-accent text-accent hover:bg-accent hover:text-white;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-outline:hover {
+    background-color: var(--accent);
+    color: white;
   }
 
   /* Card */
   .card {
-    @apply glass rounded-xl p-6 hover:border-accent/50 transition-all duration-300;
+    background-color: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: all 0.3s;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
   }
 }

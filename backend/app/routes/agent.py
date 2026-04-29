@@ -87,15 +87,15 @@ async def chat_with_agent(request: Request, chat_request: ChatRequest):
     Rate limit: 20 requests per minute.
     """
     try:
-        # Create OpenAI client with OpenRouter configuration
+        # Create OpenAI client with Groq configuration
         client = OpenAI(
-            base_url=settings.OPENROUTER_BASE_URL,
-            api_key=settings.OPENROUTER_API_KEY,
+            base_url=settings.GROQ_BASE_URL,
+            api_key=settings.GROQ_API_KEY,
         )
 
-        # Call OpenRouter API
+        # Call Groq API
         response = client.chat.completions.create(
-            model=settings.OPENROUTER_MODEL,
+            model=settings.GROQ_MODEL,
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": chat_request.message},

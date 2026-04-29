@@ -4,18 +4,45 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 // Mock framer-motion to avoid animation issues in tests
-jest.mock("framer-motion", () => ({
-  motion: {
-    nav: ({ children, ...props }: any) => <nav {...props}>{children}</nav>,
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  },
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-}));
+jest.mock("framer-motion", () => {
+  const filterProps = (props: any) => {
+    const {
+      initial,
+      animate,
+      exit,
+      transition,
+      variants,
+      whileHover,
+      whileTap,
+      whileFocus,
+      whileDrag,
+      whileInView,
+      onHoverStart,
+      onHoverEnd,
+      onTap,
+      onTapStart,
+      onTapCancel,
+      onDrag,
+      onDragStart,
+      onDragEnd,
+      ...rest
+    } = props;
+    return rest;
+  };
+
+  return {
+    motion: {
+      nav: ({ children, ...props }: any) => <nav {...filterProps(props)}>{children}</nav>,
+      div: ({ children, ...props }: any) => <div {...filterProps(props)}>{children}</div>,
+    },
+    AnimatePresence: ({ children }: any) => <>{children}</>,
+  };
+});
 
 // Mock next/link
 jest.mock("next/link", () => {
-  return ({ children, href }: any) => {
-    return <a href={href}>{children}</a>;
+  return ({ children, ...props }: any) => {
+    return <a {...props}>{children}</a>;
   };
 });
 

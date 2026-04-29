@@ -10,7 +10,11 @@
       "Bash(/c/Python314/python.exe -m pip install -e \".[dev]\")",
       "Bash(/c/Python314/python.exe:*)",
       "Bash(F:/Portfolio/my_portfolio/backend/.venv/Scripts/python.exe:*)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(npm test *)",
+      "Bash(python -m uvicorn app.main:app --host 127.0.0.1 --port 8001 --reload)",
+      "Bash(pip list *)",
+      "Bash(curl *)"
     ]
   }
 }

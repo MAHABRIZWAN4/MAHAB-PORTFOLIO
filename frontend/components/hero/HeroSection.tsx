@@ -4,13 +4,17 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Github, Linkedin, Download, Mic } from "lucide-react";
 import AnimatedTitle from "./AnimatedTitle";
+import AnimatedName from "./AnimatedName";
+import TechPills from "./TechPills";
+import AmbientBackground from "./AmbientBackground";
 import MRMonogram from "./MRMonogram";
 import StatsBar from "./StatsBar";
 
 export default function HeroSection() {
   return (
-    <section className="min-h-screen bg-background pt-20 pb-12 px-4">
-      <div className="container mx-auto">
+    <section className="relative overflow-hidden min-h-screen pt-20 pb-12 px-4" style={{ backgroundColor: "var(--background)" }}>
+      <AmbientBackground />
+      <div className="container mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[calc(100vh-8rem)]">
           {/* LEFT SIDE - Text Content */}
           <motion.div
@@ -43,15 +47,11 @@ export default function HeroSection() {
               </span>
             </motion.div>
 
-            {/* Name */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-5xl md:text-7xl font-heading font-bold text-white"
-            >
-              Mahab Rizwan
-            </motion.h1>
+            {/* Animated Name */}
+            <AnimatedName />
+
+            {/* Tech Pills */}
+            <TechPills />
 
             {/* Animated Title */}
             <AnimatedTitle />
@@ -61,7 +61,8 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-lg text-muted-foreground max-w-xl"
+              className="text-lg max-w-xl"
+              style={{ color: "var(--foreground-muted)" }}
             >
               From Karachi, Pakistan — building scalable AI-powered web
               applications.
@@ -76,25 +77,50 @@ export default function HeroSection() {
             >
               <Link
                 href="#projects"
-                className="btn-primary flex items-center space-x-2"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-white transition-all duration-200"
+                style={{ backgroundColor: "var(--accent)" }}
               >
                 <span>View Projects</span>
               </Link>
 
-              <Link
-                href="/cv.pdf"
-                target="_blank"
-                className="btn-outline flex items-center space-x-2"
+              <a
+                href="/CV_MAHAB_RIZWAN.pdf"
+                download="CV_Mahab_Rizwan.pdf"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border transition-all duration-200"
+                style={{
+                  borderColor: "var(--border)",
+                  color: "var(--foreground)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--accent)";
+                  e.currentTarget.style.color = "var(--accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border)";
+                  e.currentTarget.style.color = "var(--foreground)";
+                }}
               >
-                <Download className="w-4 h-4" />
+                <Download size={16} />
                 <span>Download CV</span>
-              </Link>
+              </a>
 
               <Link
                 href="#ai-agent"
-                className="btn border border-secondary text-secondary hover:bg-secondary hover:text-white flex items-center space-x-2"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border transition-all duration-200"
+                style={{
+                  borderColor: "var(--accent-teal)",
+                  color: "var(--accent-teal)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "var(--accent-teal)";
+                  e.currentTarget.style.color = "white";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "var(--accent-teal)";
+                }}
               >
-                <Mic className="w-4 h-4" />
+                <Mic size={16} />
                 <span>Talk to AI Agent</span>
               </Link>
             </motion.div>
@@ -110,7 +136,14 @@ export default function HeroSection() {
                 href="https://github.com/MAHABRIZWAN4"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-accent transition-colors duration-300"
+                className="transition-colors duration-300"
+                style={{ color: "var(--foreground-muted)" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--foreground-muted)";
+                }}
                 aria-label="GitHub"
               >
                 <Github className="w-5 h-5" />
@@ -119,7 +152,14 @@ export default function HeroSection() {
                 href="https://linkedin.com/in/mahab-rizwan-831095341"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-accent transition-colors duration-300"
+                className="transition-colors duration-300"
+                style={{ color: "var(--foreground-muted)" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--foreground-muted)";
+                }}
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />

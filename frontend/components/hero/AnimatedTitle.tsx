@@ -10,7 +10,7 @@ const titles = [
 
 export default function AnimatedTitle() {
   return (
-    <div className="h-16 flex items-center">
+    <div className="h-16 flex text-white items-center py-6">
       <motion.div
         key="title-container"
         initial={{ opacity: 0 }}
@@ -22,17 +22,17 @@ export default function AnimatedTitle() {
             key={title}
             initial={{ opacity: 0, y: 20 }}
             animate={{
-              opacity: index === 0 ? [0, 1, 1, 0] : 0,
-              y: index === 0 ? [20, 0, 0, -20] : 20,
+              opacity: [0, 1, 1, 0],
+              y: [20, 0, 0, -20],
             }}
             transition={{
-              duration: 8,
-              delay: index * 8,
+              duration: 2,
+              delay: index * 3,
               repeat: Infinity,
-              repeatDelay: 16,
+              repeatDelay: 8 - index * 3,
               ease: "easeInOut",
             }}
-            className="absolute inset-0 text-3xl md:text-4xl font-heading font-bold gradient-text"
+            className="absolute inset-0 text-2xl md:text-3xl font-bold text-cyan-400"
           >
             {title}
           </motion.h2>

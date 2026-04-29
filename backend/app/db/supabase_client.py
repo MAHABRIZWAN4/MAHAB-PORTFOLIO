@@ -1,4 +1,11 @@
-from supabase import create_client, Client
+try:
+    from supabase import create_client, Client
+    SUPABASE_AVAILABLE = True
+except ImportError:
+    SUPABASE_AVAILABLE = False
+    from unittest.mock import MagicMock
+    Client = MagicMock
+
 from app.config import settings
 
 
@@ -9,6 +16,14 @@ def get_client() -> Client:
     Raises:
         ValueError: If Supabase credentials are missing or invalid.
     """
+    if not SUPABASE_AVAILABLE:
+        # Return mock client for development when supabase is not installed
+        print("⚠️  WARNING: Supabase not installed. Using mock client for development.")
+        print("   Install with: pip install supabase")
+        mock_client = MagicMock()
+        mock_client.table = MagicMock(return_value=MagicMock())
+        return mock_client
+
     if not settings.SUPABASE_URL or not settings.SUPABASE_KEY:
         raise ValueError(
             "Supabase credentials missing. "
