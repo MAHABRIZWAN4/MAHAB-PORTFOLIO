@@ -2,13 +2,11 @@
 
 import { motion } from "framer-motion";
 
-const titles = [
-  "AI-Powered Full Stack Developer",
-  "Claude AI + Next.js Expert",
-  "Building Intelligent Web Apps",
-];
+interface AnimatedTitleProps {
+  titles: string[];
+}
 
-export default function AnimatedTitle() {
+export default function AnimatedTitle({ titles }: AnimatedTitleProps) {
   return (
     <div className="h-16 flex text-white items-center py-6">
       <motion.div

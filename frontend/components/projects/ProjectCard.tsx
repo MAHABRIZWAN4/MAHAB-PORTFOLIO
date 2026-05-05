@@ -3,20 +3,12 @@
 import { motion } from "framer-motion";
 import { Github, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { urlFor } from "@/lib/sanity";
+import type { Project } from "@/lib/sanity";
 
 interface ProjectCardProps {
-  project: {
-    id: number;
-    title: string;
-    description: string;
-    techStack: string[];
-    category: string;
-    githubUrl: string;
-    liveUrl: string;
-    gradient: string;
-    icon: string;
-    featured: boolean;
-  };
+  project: Project;
   index: number;
 }
 
@@ -41,15 +33,30 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
         e.currentTarget.style.boxShadow = "none";
       }}
     >
-      {/* Image Placeholder with Gradient */}
+      {/* Image or Gradient */}
       <div className="relative h-48 overflow-hidden">
-        <motion.div
-          className={`w-full h-full bg-gradient-to-br ${project.gradient} flex items-center justify-center`}
-          whileHover={{ scale: 1.03 }}
-          transition={{ duration: 0.3 }}
-        >
-          <span className="text-6xl">{project.icon}</span>
-        </motion.div>
+        {project.coverImage?.asset ? (
+          <motion.div
+            className="relative w-full h-full"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Image
+              src={urlFor(project.coverImage).width(600).height(400).url()}
+              alt={project.coverImage.alt || project.title}
+              fill
+              className="object-cover"
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            className={`w-full h-full bg-gradient-to-br ${project.gradient} flex items-center justify-center`}
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.3 }}
+          >
+            <span className="text-6xl">{project.icon}</span>
+          </motion.div>
+        )}
 
         {/* Featured Badge */}
         {project.featured && (
@@ -114,47 +121,51 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
         {/* Buttons */}
         <div className="flex gap-2">
-          <Link
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200"
-            style={{
-              borderColor: "var(--border)",
-              color: "var(--foreground)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "var(--accent)";
-              e.currentTarget.style.color = "var(--accent)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "var(--border)";
-              e.currentTarget.style.color = "var(--foreground)";
-            }}
-          >
-            <Github size={16} />
-            <span>GitHub</span>
-          </Link>
+          {project.githubUrl && (
+            <Link
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200"
+              style={{
+                borderColor: "var(--border)",
+                color: "var(--foreground)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "var(--accent)";
+                e.currentTarget.style.color = "var(--accent)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--border)";
+                e.currentTarget.style.color = "var(--foreground)";
+              }}
+            >
+              <Github size={16} />
+              <span>GitHub</span>
+            </Link>
+          )}
 
-          <Link
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-            style={{
-              backgroundColor: "var(--accent)",
-              color: "white",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.filter = "brightness(0.9)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.filter = "brightness(1)";
-            }}
-          >
-            <ExternalLink size={16} />
-            <span>Live Demo</span>
-          </Link>
+          {project.liveUrl && (
+            <Link
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+              style={{
+                backgroundColor: "var(--accent)",
+                color: "white",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.filter = "brightness(0.9)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.filter = "brightness(1)";
+              }}
+            >
+              <ExternalLink size={16} />
+              <span>Live Demo</span>
+            </Link>
+          )}
         </div>
       </div>
     </motion.div>

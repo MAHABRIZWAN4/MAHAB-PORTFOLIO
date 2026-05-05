@@ -3,12 +3,13 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-export default function AnimatedName() {
-  const name = "Mahab Rizwan";
-  const letters = name.split("");
+interface AnimatedNameProps {
+  name: string;
+}
+
+export default function AnimatedName({ name }: AnimatedNameProps) {
+  const words = name.split(" ");
   const [isHovered, setIsHovered] = useState(false);
-  
-  const colors = ["text-blue-500", "text-cyan-400"];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -43,27 +44,38 @@ export default function AnimatedName() {
   };
 
   return (
-    <motion.h1
-      className="font-bold text-6xl md:text-7xl lg:text-9xl"
+    <motion.div
+      className="inline"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {letters.map((char, index) => (
-        <motion.span
-          key={`${char}-${index}`}
-          variants={letterVariants}
-          whileHover="hover"
-          className={`inline-block ${colors[index % 2]}`}
+      {words.map((word, wordIndex) => (
+        <span
+          key={`word-${wordIndex}`}
           style={{
-            perspective: "1000px",
+            display: "inline-block",
+            whiteSpace: "nowrap",
           }}
         >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
+          {word.split("").map((char, charIndex) => (
+            <motion.span
+              key={`${wordIndex}-${charIndex}`}
+              variants={letterVariants}
+              whileHover="hover"
+              className="inline-block"
+              style={{
+                perspective: "1000px",
+              }}
+            >
+              {char}
+            </motion.span>
+          ))}
+          {wordIndex < words.length - 1 && " "}
+        </span>
       ))}
-    </motion.h1>
+    </motion.div>
   );
 }

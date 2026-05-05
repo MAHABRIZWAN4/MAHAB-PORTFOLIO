@@ -58,12 +58,12 @@ describe("ProjectsSection", () => {
     expect(document.getElementById("projects")).toBeInTheDocument();
   });
 
-  it("all 4 project titles visible", () => {
+  it("all 4 project titles visible", async () => {
     render(<ProjectsSection />);
-    expect(screen.getByText("AI-Powered Portfolio")).toBeInTheDocument();
-    expect(screen.getByText("AI Chatbot with Claude")).toBeInTheDocument();
-    expect(screen.getByText("Full Stack E-commerce")).toBeInTheDocument();
-    expect(screen.getByText("Dockerized REST API")).toBeInTheDocument();
+    expect(await screen.findByText("AI-Powered Portfolio")).toBeInTheDocument();
+    expect(await screen.findByText("AI Chatbot with Claude")).toBeInTheDocument();
+    expect(await screen.findByText("Full Stack E-commerce")).toBeInTheDocument();
+    expect(await screen.findByText("Dockerized REST API")).toBeInTheDocument();
   });
 
   it("filter tabs render", () => {
@@ -77,8 +77,10 @@ describe("ProjectsSection", () => {
     expect(backendElements.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("filter works - click AI tab", () => {
+  it("filter works - click AI tab", async () => {
     render(<ProjectsSection />);
+    // Wait for projects to load
+    await screen.findByText("AI-Powered Portfolio");
     const aiButtons = screen.getAllByText("AI");
     // Click the first AI button (which should be the filter tab)
     fireEvent.click(aiButtons[0]);
@@ -86,8 +88,10 @@ describe("ProjectsSection", () => {
     expect(screen.queryByText("Full Stack E-commerce")).not.toBeInTheDocument();
   });
 
-  it("github links present", () => {
+  it("github links present", async () => {
     render(<ProjectsSection />);
+    // Wait for projects to load
+    await screen.findByText("AI-Powered Portfolio");
     const githubLinks = screen.getAllByText(/GitHub/i);
     expect(githubLinks.length).toBeGreaterThanOrEqual(1);
   });

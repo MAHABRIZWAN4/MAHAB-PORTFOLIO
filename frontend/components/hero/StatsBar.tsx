@@ -2,20 +2,20 @@
 
 import { motion } from "framer-motion";
 
-const stats = [
-  { value: "3+", label: "Apps Built" },
-  { value: "50+", label: "Languages" },
-  { value: "99%", label: "Uptime" },
-  { value: "2+", label: "Years Exp" },
-];
+interface StatsBarProps {
+  stats: Array<{
+    value: string;
+    label: string;
+  }>;
+}
 
-export default function StatsBar() {
+export default function StatsBar({ stats }: StatsBarProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.8 }}
-      className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12"
+      className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-3 "
     >
       {stats.map((stat, index) => (
         <motion.div

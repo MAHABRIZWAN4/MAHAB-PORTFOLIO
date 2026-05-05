@@ -2,15 +2,14 @@
 
 import { motion } from "framer-motion";
 
-const pills = [
-  { icon: "⚡", label: "Next.js 15" },
-  { icon: "🐍", label: "Python" },
-  { icon: "🤖", label: "Claude AI" },
-  { icon: "🐳", label: "Docker" },
-  { icon: "☁️", label: "Kubernetes" },
-];
+interface TechPillsProps {
+  pills: Array<{
+    icon: string;
+    label: string;
+  }>;
+}
 
-export default function TechPills() {
+export default function TechPills({ pills }: TechPillsProps) {
   return (
     <div className="flex flex-wrap gap-2 mt-4 mb-6">
       {pills.map((pill, index) => (

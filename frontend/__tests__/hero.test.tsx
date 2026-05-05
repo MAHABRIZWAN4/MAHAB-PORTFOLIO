@@ -58,15 +58,17 @@ jest.mock("next/link", () => {
 });
 
 describe("Hero Section", () => {
-  it("test_hero_renders_name - Mahab Rizwan visible", () => {
+  it("test_hero_renders_name - Mahab Rizwan visible", async () => {
     render(<HeroSection />);
-    // Name is split into individual letters, so check for unique letters
+    // Wait for the component to load data and render
+    await screen.findByText("View Projects", {}, { timeout: 3000 });
     const mLetters = screen.getAllByText("M");
     expect(mLetters.length).toBeGreaterThanOrEqual(1);
   });
 
-  it("test_hero_has_cta_buttons - all 3 buttons present", () => {
+  it("test_hero_has_cta_buttons - all 3 buttons present", async () => {
     render(<HeroSection />);
+    await screen.findByText("View Projects");
     expect(screen.getByText("View Projects")).toBeInTheDocument();
     expect(screen.getByText("Download CV")).toBeInTheDocument();
     expect(screen.getByText("Talk to AI Agent")).toBeInTheDocument();
@@ -78,31 +80,38 @@ describe("Hero Section", () => {
   });
 
   it("test_stats_bar_shows - 3+ and 50+ visible", () => {
-    render(<StatsBar />);
+    const mockStats = [
+      { label: "Years Experience", value: "3+" },
+      { label: "Projects Completed", value: "50+" },
+      { label: "Client Satisfaction", value: "99%" },
+      { label: "Years in AI", value: "2+" },
+    ];
+    render(<StatsBar stats={mockStats} />);
     expect(screen.getByText("3+")).toBeInTheDocument();
     expect(screen.getByText("50+")).toBeInTheDocument();
     expect(screen.getByText("99%")).toBeInTheDocument();
     expect(screen.getByText("2+")).toBeInTheDocument();
   });
 
-  it("test_available_badge - Available for hire text present", () => {
+  it("test_available_badge - Available for hire text present", async () => {
     render(<HeroSection />);
+    await screen.findByText(/Available for hire/i);
     expect(screen.getByText(/Available for hire/i)).toBeInTheDocument();
   });
 
-  it("renders tagline about Karachi Pakistan", () => {
+  it("renders subtitle about software engineer", async () => {
     render(<HeroSection />);
+    await screen.findByText(/SOFTWARE ENGINEER/i);
     expect(
-      screen.getByText(/From Karachi, Pakistan/i)
+      screen.getByText(/SOFTWARE ENGINEER, AI-POWERED FULL STACK DEVELOPER/i)
     ).toBeInTheDocument();
   });
 
-  it("renders social links", () => {
+  it("renders social links as text", async () => {
     render(<HeroSection />);
-    const githubLinks = screen.getAllByLabelText("GitHub");
-    const linkedinLinks = screen.getAllByLabelText("LinkedIn");
-    expect(githubLinks.length).toBeGreaterThan(0);
-    expect(linkedinLinks.length).toBeGreaterThan(0);
+    await screen.findByText("GitHub");
+    expect(screen.getByText("GitHub")).toBeInTheDocument();
+    expect(screen.getByText("LinkedIn")).toBeInTheDocument();
   });
 
   it("renders tech badges in monogram", () => {
@@ -112,17 +121,17 @@ describe("Hero Section", () => {
     expect(screen.getByText("FastAPI")).toBeInTheDocument();
   });
 
-  it("download link has correct href", () => {
+  it("download link has correct href", async () => {
     render(<HeroSection />);
+    await screen.findByText("Download CV");
     const downloadLink = document.querySelector('[download]');
     expect(downloadLink).toHaveAttribute("href", "/CV_MAHAB_RIZWAN.pdf");
   });
 
-  it("tech pills render in hero", () => {
+  it("hero section has correct background image reference", async () => {
     render(<HeroSection />);
-    expect(screen.getByText("Next.js 15")).toBeInTheDocument();
-    expect(screen.getByText("Python")).toBeInTheDocument();
-    expect(screen.getByText("Docker")).toBeInTheDocument();
-    expect(screen.getByText("Kubernetes")).toBeInTheDocument();
+    await screen.findByText("View Projects");
+    const bgImage = document.querySelector('[style*="hero-bg.png"]');
+    expect(bgImage).toBeInTheDocument();
   });
 });

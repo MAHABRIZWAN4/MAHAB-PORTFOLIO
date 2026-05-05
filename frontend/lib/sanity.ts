@@ -1,11 +1,18 @@
 import { createClient } from "next-sanity";
+import imageUrlBuilder from "@sanity/image-url";
 
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  apiVersion: "2026-01-01",
+  apiVersion: "2024-01-01",
   useCdn: true,
 });
+
+const builder = imageUrlBuilder(client);
+
+export function urlFor(source: any) {
+  return builder.image(source);
+}
 
 export interface Project {
   _id: string;
@@ -29,6 +36,42 @@ export interface Project {
   liveUrl?: string;
   featured: boolean;
   order: number;
+}
+
+export interface Hero {
+  _id: string;
+  name: string;
+  rotatingTitles: string[];
+  techPills: Array<{
+    icon: string;
+    label: string;
+  }>;
+  tagline: string;
+  availabilityStatus?: string;
+  availabilityYear?: string;
+  stats: Array<{
+    value: string;
+    label: string;
+  }>;
+  githubUrl: string;
+  linkedinUrl: string;
+  cvFile?: {
+    asset: {
+      _ref: string;
+      url: string;
+    };
+  };
+}
+
+export interface Footer {
+  _id: string;
+  copyrightName: string;
+  githubUrl: string;
+  linkedinUrl: string;
+  builtWithTech: Array<{
+    name: string;
+    color: string;
+  }>;
 }
 
 export async function getProjects(): Promise<Project[]> {
@@ -66,6 +109,41 @@ export async function getFeaturedProjects(): Promise<Project[]> {
     liveUrl,
     featured,
     order
+  }`;
+
+  return client.fetch(query);
+}
+
+export async function getHero(): Promise<Hero | null> {
+  const query = `*[_type == "hero"][0] {
+    _id,
+    name,
+    rotatingTitles,
+    techPills,
+    tagline,
+    availabilityStatus,
+    availabilityYear,
+    stats,
+    githubUrl,
+    linkedinUrl,
+    cvFile {
+      asset-> {
+        _ref,
+        url
+      }
+    }
+  }`;
+
+  return client.fetch(query);
+}
+
+export async function getFooter(): Promise<Footer | null> {
+  const query = `*[_type == "footer"][0] {
+    _id,
+    copyrightName,
+    githubUrl,
+    linkedinUrl,
+    builtWithTech
   }`;
 
   return client.fetch(query);

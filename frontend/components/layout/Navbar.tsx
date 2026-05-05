@@ -35,7 +35,7 @@ export default function Navbar() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 "
       style={{
         backgroundColor: isScrolled ? "rgba(var(--background-rgb), 0.8)" : "transparent",
         backdropFilter: isScrolled ? "blur(12px)" : "none",
@@ -43,17 +43,15 @@ export default function Navbar() {
         boxShadow: isScrolled ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)" : "none",
       }}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4   ">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center" style={{ background: "linear-gradient(to bottom right, var(--accent), var(--accent-teal))" }}>
-              <span className="text-white font-heading font-bold text-lg">
-                MR
-              </span>
-            </div>
-            <span className="font-heading font-bold text-xl hidden sm:block" style={{ color: "var(--foreground)" }}>
-              Mahab Rizwan
+          <Link href="/" className="flex items-center">
+            <span
+              className="font-mono font-bold text-[17px] tracking-[2px]"
+              style={{ color: "#00d4ff" }}
+            >
+              MahabRizwan._
             </span>
           </Link>
 
@@ -64,31 +62,26 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setActiveLink(link.href)}
-                className="relative font-medium transition-colors duration-300"
+                className="relative font-mono text-[12px] tracking-[2px] uppercase transition-colors duration-300 group"
                 style={{
-                  color: activeLink === link.href ? "var(--accent)" : "var(--foreground)",
+                  color: activeLink === link.href
+                    ? (mounted && theme === "light" ? "#000000" : "#ffffff")
+                    : (mounted && theme === "light" ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.5)"),
                 }}
                 onMouseEnter={(e) => {
-                  if (activeLink !== link.href) {
-                    e.currentTarget.style.color = "var(--accent)";
-                  }
+                  e.currentTarget.style.color = mounted && theme === "light" ? "#000000" : "#ffffff";
                 }}
                 onMouseLeave={(e) => {
                   if (activeLink !== link.href) {
-                    e.currentTarget.style.color = "var(--foreground)";
+                    e.currentTarget.style.color = mounted && theme === "light" ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.5)";
                   }
                 }}
               >
                 {link.name}
-                {activeLink === link.href && (
-                  <motion.div
-                    layoutId="activeLink"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5"
-                    style={{ backgroundColor: "var(--accent)" }}
-                    initial={false}
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
+                <span
+                  className="absolute -bottom-1 left-0 h-[1px] bg-[#00d4ff] transition-all duration-300 group-hover:w-full"
+                  style={{ width: activeLink === link.href ? "100%" : "0" }}
+                />
               </Link>
             ))}
 
@@ -96,26 +89,23 @@ export default function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-full border transition-all duration-200"
+                className="px-3 py-1.5 rounded font-mono text-[11px] tracking-[1px] uppercase transition-all duration-200"
                 style={{
-                  borderColor: "var(--border)",
-                  color: "var(--foreground)",
+                  backgroundColor: "transparent",
+                  border: theme === "light" ? "1px solid rgba(0, 0, 0, 0.25)" : "1px solid rgba(0, 212, 255, 0.25)",
+                  color: theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "var(--accent)";
-                  e.currentTarget.style.color = "var(--accent)";
+                  e.currentTarget.style.borderColor = theme === "light" ? "#000000" : "#00d4ff";
+                  e.currentTarget.style.color = theme === "light" ? "#000000" : "#00d4ff";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "var(--border)";
-                  e.currentTarget.style.color = "var(--foreground)";
+                  e.currentTarget.style.borderColor = theme === "light" ? "rgba(0, 0, 0, 0.25)" : "rgba(0, 212, 255, 0.25)";
+                  e.currentTarget.style.color = theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)";
                 }}
                 aria-label="Toggle theme"
               >
-                {theme === "dark" ? (
-                  <Sun className="w-4 h-4" />
-                ) : (
-                  <Moon className="w-4 h-4" />
-                )}
+                {theme === "dark" ? "Light" : "Dark"}
               </button>
             )}
           </div>
@@ -125,26 +115,23 @@ export default function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-full border transition-all duration-200"
+                className="px-3 py-1.5 rounded font-mono text-[11px] tracking-[1px] uppercase transition-all duration-200"
                 style={{
-                  borderColor: "var(--border)",
-                  color: "var(--foreground)",
+                  backgroundColor: "transparent",
+                  border: theme === "light" ? "1px solid rgba(0, 0, 0, 0.25)" : "1px solid rgba(0, 212, 255, 0.25)",
+                  color: theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "var(--accent)";
-                  e.currentTarget.style.color = "var(--accent)";
+                  e.currentTarget.style.borderColor = theme === "light" ? "#000000" : "#00d4ff";
+                  e.currentTarget.style.color = theme === "light" ? "#000000" : "#00d4ff";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "var(--border)";
-                  e.currentTarget.style.color = "var(--foreground)";
+                  e.currentTarget.style.borderColor = theme === "light" ? "rgba(0, 0, 0, 0.25)" : "rgba(0, 212, 255, 0.25)";
+                  e.currentTarget.style.color = theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)";
                 }}
                 aria-label="Toggle theme"
               >
-                {theme === "dark" ? (
-                  <Sun className="w-4 h-4" />
-                ) : (
-                  <Moon className="w-4 h-4" />
-                )}
+                {theme === "dark" ? "Light" : "Dark"}
               </button>
             )}
             <button

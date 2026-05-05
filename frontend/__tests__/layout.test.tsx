@@ -48,9 +48,9 @@ jest.mock("next/link", () => {
 
 describe("Layout Components", () => {
   describe("Navbar", () => {
-    it("renders navbar with MR logo", () => {
+    it("renders navbar with MahabRizwan._ logo", () => {
       render(<Navbar />);
-      const logo = screen.getByText("MR");
+      const logo = screen.getByText("MahabRizwan._");
       expect(logo).toBeInTheDocument();
     });
 
@@ -62,11 +62,6 @@ describe("Layout Components", () => {
       expect(screen.getByText("Contact")).toBeInTheDocument();
     });
 
-    it("renders Mahab Rizwan name in navbar", () => {
-      render(<Navbar />);
-      expect(screen.getByText("Mahab Rizwan")).toBeInTheDocument();
-    });
-
     it("has mobile menu button", () => {
       render(<Navbar />);
       const menuButton = screen.getByLabelText("Toggle menu");
@@ -75,36 +70,35 @@ describe("Layout Components", () => {
   });
 
   describe("Footer", () => {
-    it("footer shows 2026 copyright", () => {
+    it("footer shows 2026 copyright", async () => {
       render(<Footer />);
-      const currentYear = new Date().getFullYear();
       expect(
-        screen.getByText(`© ${currentYear} Mahab Rizwan. All rights reserved.`)
+        await screen.findByText(/© 2026 Mahab Rizwan. All rights reserved./i)
       ).toBeInTheDocument();
     });
 
-    it("footer has GitHub link", () => {
+    it("footer has GitHub link", async () => {
       render(<Footer />);
-      const githubLink = screen.getByLabelText("GitHub");
+      const githubLink = await screen.findByLabelText("GitHub");
       expect(githubLink).toHaveAttribute(
         "href",
-        "https://github.com/MAHABRIZWAN4"
+        "https://github.com/test"
       );
     });
 
-    it("footer has LinkedIn link", () => {
+    it("footer has LinkedIn link", async () => {
       render(<Footer />);
-      const linkedinLink = screen.getByLabelText("LinkedIn");
+      const linkedinLink = await screen.findByLabelText("LinkedIn");
       expect(linkedinLink).toHaveAttribute(
         "href",
-        "https://linkedin.com/in/mahab-rizwan-831095341"
+        "https://linkedin.com/in/test"
       );
     });
 
-    it("footer shows built with Next.js 15 and Claude AI", () => {
+    it("footer shows built with Next.js 15 and Claude AI", async () => {
       render(<Footer />);
-      expect(screen.getByText("Next.js 15")).toBeInTheDocument();
-      expect(screen.getByText("Claude AI")).toBeInTheDocument();
+      expect(await screen.findByText("Next.js 15")).toBeInTheDocument();
+      expect(await screen.findByText("Claude AI")).toBeInTheDocument();
     });
   });
 });

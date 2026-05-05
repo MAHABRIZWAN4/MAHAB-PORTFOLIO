@@ -1,70 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ProjectCard from "../projects/ProjectCard";
 import FilterTabs from "../projects/FilterTabs";
+import { getProjects, type Project } from "@/lib/sanity";
 
-const projectsData = [
-  {
-    id: 1,
-    title: "AI-Powered Portfolio",
-    description: "Interactive portfolio with AI chatbot powered by Claude API, featuring real-time conversations and intelligent responses.",
-    techStack: ["Next.js 15", "FastAPI", "Claude AI", "Supabase", "Docker"],
-    category: "AI",
-    githubUrl: "https://github.com/MAHABRIZWAN4",
-    liveUrl: "#",
-    gradient: "from-indigo-500 via-purple-500 to-pink-500",
-    icon: "🤖",
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "AI Chatbot with Claude",
-    description: "Advanced conversational AI using Claude 3.5 Sonnet with context awareness and natural language understanding.",
-    techStack: ["Python", "Claude API", "FastAPI", "WebSocket", "Redis"],
-    category: "AI",
-    githubUrl: "https://github.com/MAHABRIZWAN4",
-    liveUrl: "#",
-    gradient: "from-cyan-500 via-blue-500 to-indigo-500",
-    icon: "💬",
-    featured: true,
-  },
-  {
-    id: 3,
-    title: "Full Stack E-commerce",
-    description: "Modern e-commerce platform with payment integration, inventory management, and real-time order tracking.",
-    techStack: ["Next.js", "Node.js", "PostgreSQL", "Stripe", "Tailwind"],
-    category: "Full Stack",
-    githubUrl: "https://github.com/MAHABRIZWAN4",
-    liveUrl: "#",
-    gradient: "from-emerald-500 via-teal-500 to-cyan-500",
-    icon: "🛒",
-    featured: false,
-  },
-  {
-    id: 4,
-    title: "Dockerized REST API",
-    description: "High-performance REST API with FastAPI, containerized with Docker and deployed on Kubernetes.",
-    techStack: ["FastAPI", "Docker", "Kubernetes", "Python", "PostgreSQL"],
-    category: "Backend",
-    githubUrl: "https://github.com/MAHABRIZWAN4",
-    liveUrl: "#",
-    gradient: "from-blue-500 via-indigo-500 to-violet-500",
-    icon: "🐳",
-    featured: false,
-  },
-];
-
-const categories = ["All", "AI", "Full Stack", "Backend"];
+const categories = ["All", "AI", "Full Stack", "Backend", "Web3"];
 
 export default function ProjectsSection() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const data = await getProjects();
+        setProjects(data);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
 
   const filteredProjects =
     activeFilter === "All"
-      ? projectsData
-      : projectsData.filter((project) => project.category === activeFilter);
+      ? projects
+      : projects.filter((project) => project.category === activeFilter);
 
   return (
     <section
@@ -104,15 +70,52 @@ export default function ProjectsSection() {
           />
         </div>
 
+        {/* Loading Skeleton */}
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="rounded-xl overflow-hidden border animate-pulse"
+                style={{
+                  backgroundColor: "var(--card)",
+                  borderColor: "var(--card-border)",
+                }}
+              >
+                <div className="h-48 bg-gray-300 dark:bg-gray-700" />
+                <div className="p-5 space-y-3">
+                  <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4" />
+                  <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2" />
+                  <div className="h-16 bg-gray-300 dark:bg-gray-700 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* No Projects Message */}
+        {!loading && projects.length === 0 && (
+          <div className="text-center py-12">
+            <p
+              className="text-lg"
+              style={{ color: "var(--foreground-muted)" }}
+            >
+              No projects yet
+            </p>
+          </div>
+        )}
+
         {/* Projects Grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {filteredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </motion.div>
+        {!loading && projects.length > 0 && (
+          <motion.div
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {filteredProjects.map((project, index) => (
+              <ProjectCard key={project._id} project={project} index={index} />
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   );
