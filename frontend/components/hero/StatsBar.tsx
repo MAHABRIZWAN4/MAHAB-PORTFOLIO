@@ -15,7 +15,7 @@ export default function StatsBar({ stats }: StatsBarProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.8 }}
-      className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-3 "
+      className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 "
     >
       {stats.map((stat, index) => (
         <motion.div

@@ -114,6 +114,15 @@
     }
   }
 
+  @keyframes scroll-outline {
+    0% {
+      stroke-dashoffset: 200;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
   @keyframes letter-in {
     0% {
       opacity: 0;

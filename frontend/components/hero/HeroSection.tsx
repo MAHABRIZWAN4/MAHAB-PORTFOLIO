@@ -68,7 +68,7 @@ export default function HeroSection() {
         style={{
           backgroundImage: "url(/hero-bg.png)",
         
-          opacity: isDark ? 8.9999 : 0.950,
+          opacity: isDark ? 0.5 : 0.1,
         }}
       />
 
@@ -302,36 +302,82 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - Above Stats Bar */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-2 z-10"
+          className="flex justify-center mt-[-75px]  mb-8 relative z-10 "
         >
-          <div
-            className="w-[26px] h-[42px] rounded-full flex items-start justify-center pt-2"
-            style={{
-              border: "1px solid rgba(255,255,255,0.12)",
+          <button
+            onClick={() => {
+              window.scrollTo({
+                top: window.innerHeight,
+                behavior: "smooth",
+              });
             }}
+            className=" flex flex-col items-center space-y-2 cursor-pointer group transition-all duration-300 hover:scale-110"
+            aria-label="Scroll down"
           >
-            <div
-              className="w-1 h-2 rounded-full bg-white"
+            <svg
+              width="26"
+              height="42"
+              viewBox="0 0 26 42"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="relative"
+            >
+              {/* Animated outline with theme color */}
+              <rect
+                x="1"
+                y="1"
+                width="24"
+                height="40"
+                rx="12"
+                stroke="#00d4ff"
+                strokeWidth="2"
+                strokeDasharray="200"
+                strokeDashoffset="200"
+                style={{
+                  animation: "scroll-outline 2s linear infinite",
+                }}
+              />
+              {/* Static border */}
+              <rect
+                x="1"
+                y="1"
+                width="24"
+                height="40"
+                rx="12"
+                stroke={isDark ? "rgba(0, 212, 255, 0.2)" : "rgba(0, 212, 255, 0.3)"}
+                strokeWidth="1"
+              />
+              {/* Animated Down Arrow */}
+              <g
+                style={{
+                  animation: "scroll-bounce 2s ease-in-out infinite",
+                }}
+              >
+                <path
+                  d="M13 12 L13 18 M13 18 L10 15 M13 18 L16 15"
+                  stroke="#00d4ff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </g>
+            </svg>
+            <span
+              className=" font-mono uppercase tracking-[2px] transition-colors duration-300"
               style={{
-                animation: "scroll-bounce 2s ease-in-out infinite",
-                opacity: 0.5,
+                fontSize: "9px",
+                color: isDark ? "rgba(0, 212, 255, 0.5)" : "rgba(0, 212, 255, 0.6)",
               }}
-            />
-          </div>
-          <span
-            className="font-mono uppercase tracking-[2px]"
-            style={{
-              fontSize: "9px",
-              color: "rgba(255,255,255,0.2)",
-            }}
-          >
-            SCROLL
-          </span>
+            >
+              SCROLL
+            </span>
+          </button>
         </motion.div>
 
         {/* Stats Bar */}
