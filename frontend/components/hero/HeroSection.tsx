@@ -55,7 +55,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative overflow-hidden min-h-screen pt-20 pb-12 px-4"
+      className="relative overflow-hidden min-h-screen pt-16 pb-12 px-4"
       style={{
         background: isDark
           ? "linear-gradient(160deg, #080c18, #0c1220, #101828, #0a0e18)"
@@ -92,13 +92,13 @@ export default function HeroSection() {
       />
 
       <div className="container mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row gap-12 items-center min-h-[calc(100vh-8rem)]">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center min-h-[calc(100vh-8rem)]">
           {/* LEFT SIDE - Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex-1 max-w-[520px] space-y-6 relative"
+            className="flex-1 w-full max-w-[520px] space-y-3 md:space-y-4 relative"
           >
             {/* Warm Glow Behind Name */}
             <div
@@ -107,10 +107,10 @@ export default function HeroSection() {
                 display: isDark ? "block" : "none",
                 top: "60px",
                 left: "-20px",
-                width: "420px",
-                height: "160px",
-                background: "radial-gradient(ellipse, rgba(255,150,40,0.13), transparent)",
-                filter: "blur(40px)",
+                width: "360px",
+                height: "120px",
+                background: "radial-gradient(ellipse, rgba(255,150,40,0.07), transparent)",
+                filter: "blur(80px)",
                 animation: "glow-pulse 3s ease-in-out infinite",
                 zIndex: 0,
               }}
@@ -156,7 +156,7 @@ export default function HeroSection() {
               <h1
                 className="font-black uppercase tracking-tight leading-[0.9]"
                 style={{
-                  fontSize: "clamp(52px, 6vw, 80px)",
+                  fontSize: "clamp(40px, 8vw, 80px)",
                   letterSpacing: "-1px",
                   color: isDark ? "#ffffff" : "#0a0a0a",
                   textShadow: isDark
@@ -174,9 +174,8 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="font-mono uppercase tracking-[3.5px] leading-[1.9] relative z-10"
+              className="font-mono uppercase tracking-[3.5px] leading-[1.9] relative z-10 text-[9px] md:text-[10.5px]"
               style={{
-                fontSize: "10.5px",
                 color: isDark ? "rgba(255,255,255,0.38)" : "rgba(0,0,0,0.45)",
               }}
             >
@@ -188,11 +187,11 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex flex-wrap gap-4 relative z-10"
+              className="flex flex-col sm:flex-row flex-wrap gap-3 relative z-10"
             >
               <Link
                 href="#projects"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-white transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 rounded-lg text-white transition-all duration-200 text-sm md:text-base w-full sm:w-auto"
                 style={{
                   backgroundColor: "#6366f1",
                   boxShadow: "0 0 24px rgba(99,102,241,0.35)",
@@ -210,7 +209,7 @@ export default function HeroSection() {
               <a
                 href={heroData.cvFile?.asset?.url || "/CV_MAHAB_RIZWAN.pdf"}
                 download="CV_Mahab_Rizwan.pdf"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 rounded-lg transition-all duration-200 text-sm md:text-base w-full sm:w-auto"
                 style={{
                   backgroundColor: "transparent",
                   border: "1px solid rgba(255,255,255,0.18)",
@@ -229,7 +228,7 @@ export default function HeroSection() {
 
               <Link
                 href="#ai-agent"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-5 md:px-6 py-2.5 md:py-3 rounded-lg transition-all duration-200 text-sm md:text-base w-full sm:w-auto"
                 style={{
                   backgroundColor: "transparent",
                   border: "1px solid rgba(20,184,166,0.28)",
@@ -254,15 +253,14 @@ export default function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex items-center space-x-3 pt-4 relative z-10"
+              className="flex items-center justify-center sm:justify-start space-x-3 pt-4 relative z-10"
             >
               <Link
                 href={heroData.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono uppercase tracking-[1px] transition-colors duration-300"
+                className="inline-flex items-center gap-1.5 font-mono uppercase tracking-[1px] transition-colors duration-300 text-[10px] md:text-[11px]"
                 style={{
-                  fontSize: "11px",
                   color: isDark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.35)",
                 }}
                 onMouseEnter={(e) => {
@@ -272,6 +270,7 @@ export default function HeroSection() {
                   e.currentTarget.style.color = isDark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.35)";
                 }}
               >
+                <Github size={14} />
                 GitHub
               </Link>
               <span style={{ color: isDark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.35)" }}>|</span>
@@ -279,9 +278,8 @@ export default function HeroSection() {
                 href={heroData.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono uppercase tracking-[1px] transition-colors duration-300"
+                className="inline-flex items-center gap-1.5 font-mono uppercase tracking-[1px] transition-colors duration-300 text-[10px] md:text-[11px]"
                 style={{
-                  fontSize: "11px",
                   color: isDark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.35)",
                 }}
                 onMouseEnter={(e) => {
@@ -291,13 +289,14 @@ export default function HeroSection() {
                   e.currentTarget.style.color = isDark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.35)";
                 }}
               >
+                <Linkedin size={14} />
                 LinkedIn
               </Link>
             </motion.div>
           </motion.div>
 
           {/* RIGHT SIDE - MR Monogram */}
-          <div className="hidden lg:flex items-center justify-center flex-1">
+          <div className="flex items-center justify-center mx-auto md:mx-0 mt-6 md:mt-0">
             <MRMonogram />
           </div>
         </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
+import MobileMenu from "./MobileMenu";
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -48,7 +49,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <span
-              className="font-mono font-bold text-[17px] tracking-[2px]"
+              className="font-mono font-bold text-[14px] sm:text-[15px] lg:text-[17px] tracking-[2px]"
               style={{ color: "#00d4ff" }}
             >
               MahabRizwan._
@@ -56,7 +57,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -111,7 +112,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button & Theme Toggle */}
-          <div className="md:hidden flex items-center space-x-2">
+          <div className="lg:hidden flex items-center space-x-2">
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -160,50 +161,14 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden border-t"
-            style={{
-              backgroundColor: "var(--background-secondary)",
-              borderColor: "var(--border)",
-            }}
-          >
-            <div className="container mx-auto px-4 py-4 space-y-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => {
-                    setActiveLink(link.href);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="block py-2 font-medium transition-colors duration-300"
-                  style={{
-                    color: activeLink === link.href ? "var(--accent)" : "var(--foreground)",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeLink !== link.href) {
-                      e.currentTarget.style.color = "var(--accent)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeLink !== link.href) {
-                      e.currentTarget.style.color = "var(--foreground)";
-                    }
-                  }}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        activeLink={activeLink}
+        setActiveLink={setActiveLink}
+        theme={theme}
+        mounted={mounted}
+      />
     </motion.nav>
   );
 }

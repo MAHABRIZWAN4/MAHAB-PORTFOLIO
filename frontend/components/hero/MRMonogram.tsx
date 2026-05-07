@@ -30,7 +30,7 @@ export default function MRMonogram() {
       whileHover={{ scale: 1.05 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className="relative w-full h-full flex items-center justify-center"
+      className="relative w-[300px] h-[300px] mt-[-240px] sm:mt-[-480px] sm:w-[500px] sm:h-[400px] md:mt-[80px] md:w-[700px] md:h-[500px] lg:mt-[60px] lg:w-[800px] lg:h-[600px] xl:mt-[40px] xl:w-[950px] xl:h-[700px] flex items-center justify-center"
     >
       {/* Floating Animation Container */}
       <motion.div
@@ -45,10 +45,11 @@ export default function MRMonogram() {
         className="relative"
       >
         <svg
-          width="400"
-          height="400"
+          width="100%"
+          height="100%"
           viewBox="0 0 400 400"
-          className="w-full h-full max-w-md"
+          className="w-full h-full"
+          preserveAspectRatio="xMidYMid meet"
         >
           {/* Ring 3 - Pulsing Outer Ring */}
           <motion.circle
@@ -143,9 +144,9 @@ export default function MRMonogram() {
             textAnchor="middle"
             className="font-heading"
             style={{
-              fontSize: "64px",
+              fontSize: "clamp(40px, 16vw, 96px)",
               fontWeight: 500,
-              fill: "url(#gradient2)",
+              fill: mounted ? "#ffffff" : "#666666",
             }}
           >
             MR
@@ -185,10 +186,10 @@ export default function MRMonogram() {
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                width: "220px",
-                height: "220px",
-                marginLeft: "-110px",
-                marginTop: "-110px",
+                width: "clamp(180px, 55vw, 280px)",
+                height: "clamp(180px, 55vw, 280px)",
+                marginLeft: "calc(clamp(180px, 55vw, 280px) / -2)",
+                marginTop: "calc(clamp(180px, 55vw, 280px) / -2)",
               }}
             >
               <div
