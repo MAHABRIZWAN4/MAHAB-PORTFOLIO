@@ -74,12 +74,16 @@ export default function HeroSection() {
 
       {/* Left Dark Overlay */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          display: isDark ? "block" : "none",
-          background: "linear-gradient(90deg, rgba(6,9,18,0.92) 0%, rgba(6,9,18,0.75) 45%, rgba(6,9,18,0.2) 75%, transparent 100%)",
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{
+        backgroundImage: "url(/hero-bg.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "scroll",
+        opacity: isDark ? 0.5 : 0.1,
         }}
-      />
+        />
 
       {/* Bottom Fade */}
       <div
