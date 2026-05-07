@@ -3,172 +3,386 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import {
+  Menu,
+  X,
+  Github,
+  Linkedin,
+  Sun,
+  Moon,
+} from "lucide-react";
 import { useTheme } from "next-themes";
-import MobileMenu from "./MobileMenu";
 
 const navLinks = [
-  { name: "About", href: "#about" },
+  { name: "Home", href: "#home" },
   { name: "Projects", href: "#projects" },
-  { name: "AI Agent", href: "#ai-agent" },
+  { name: "Skills", href: "#skills" },
+  { name: "Experience", href: "#experience" },
   { name: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isDark = mounted && theme === "dark";
+
+  const navBackground = isDark
+    ? scrolled
+      ? "rgba(10, 14, 24, 0.78)"
+      : "rgba(10, 14, 24, 0.45)"
+    : scrolled
+    ? "rgba(255,255,255,0.92)"
+    : "rgba(255,255,255,0.72)";
+
+  const navBorder = isDark
+    ? "rgba(255,255,255,0.08)"
+    : "rgba(0,0,0,0.08)";
+
+  const textPrimary = isDark ? "#ffffff" : "#111827";
+
+  const textSecondary = isDark
+    ? "rgba(255,255,255,0.72)"
+    : "rgba(17,24,39,0.72)";
+
+  const glassBg = isDark
+    ? "rgba(255,255,255,0.06)"
+    : "rgba(0,0,0,0.04)";
+
   return (
-    <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 "
-      style={{
-        backgroundColor: isScrolled ? "rgba(var(--background-rgb), 0.8)" : "transparent",
-        backdropFilter: isScrolled ? "blur(12px)" : "none",
-        borderBottom: isScrolled ? "1px solid var(--border)" : "none",
-        boxShadow: isScrolled ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)" : "none",
-      }}
-    >
-      <div className="container mx-auto px-4   ">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <span
-              className="font-mono font-bold text-[14px] sm:text-[15px] lg:text-[17px] tracking-[2px]"
-              style={{ color: "#00d4ff" }}
-            >
-              MahabRizwan._
-            </span>
-          </Link>
+    <>
+      {/* NAVBAR */}
+      <motion.nav
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7 }}
+        className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-8"
+      >
+        <div
+          className="mx-auto mt-4 max-w-7xl rounded-2xl border backdrop-blur-xl transition-all duration-300"
+          style={{
+            background: navBackground,
+            borderColor: navBorder,
+            boxShadow: isDark
+              ? "0 8px 40px rgba(0,0,0,0.35)"
+              : "0 8px 30px rgba(0,0,0,0.08)",
+          }}
+        >
+          <div className="flex items-center justify-between h-[72px] px-5 lg:px-8">
+            {/* LOGO */}
+            <Link href="#home">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-3 cursor-pointer"
+              >
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)",
+                    boxShadow:
+                      "0 0 25px rgba(99,102,241,0.45)",
+                  }}
+                >
+                  MR
+                </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navLinks.map((link) => (
+                <div className="hidden sm:block">
+                  <h2
+                    className="font-bold text-lg leading-none"
+                    style={{
+                      color: textPrimary,
+                    }}
+                  >
+                    Mahab Rizwan
+                  </h2>
+
+                  <p
+                    className="text-xs tracking-[2px] uppercase mt-1"
+                    style={{
+                      color: textSecondary,
+                    }}
+                  >
+                    AI Full Stack Developer
+                  </p>
+                </div>
+              </motion.div>
+            </Link>
+
+            {/* DESKTOP NAV */}
+            <div className="hidden lg:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="relative group text-sm font-medium transition-all duration-300"
+                  style={{
+                    color: textSecondary,
+                  }}
+                >
+                  {link.name}
+
+                  <span
+                    className="absolute left-0 -bottom-1 h-[2px] w-0 group-hover:w-full transition-all duration-300"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #6366F1, #14B8A6)",
+                    }}
+                  />
+                </Link>
+              ))}
+            </div>
+
+            {/* RIGHT SIDE */}
+            <div className="hidden lg:flex items-center gap-4">
+              {/* THEME TOGGLE */}
+              <button
+                onClick={() =>
+                  setTheme(isDark ? "light" : "dark")
+                }
+                className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110"
+                style={{
+                  background: glassBg,
+                  color: textPrimary,
+                  border: `1px solid ${navBorder}`,
+                }}
+              >
+                {isDark ? (
+                  <Sun size={18} />
+                ) : (
+                  <Moon size={18} />
+                )}
+              </button>
+
+              {/* GITHUB */}
               <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setActiveLink(link.href)}
-                className="relative font-mono text-[12px] tracking-[2px] uppercase transition-colors duration-300 group"
+                href="https://github.com"
+                target="_blank"
+                className="transition-all duration-300 hover:scale-110"
                 style={{
-                  color: activeLink === link.href
-                    ? (mounted && theme === "light" ? "#000000" : "#ffffff")
-                    : (mounted && theme === "light" ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.5)"),
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = mounted && theme === "light" ? "#000000" : "#ffffff";
-                }}
-                onMouseLeave={(e) => {
-                  if (activeLink !== link.href) {
-                    e.currentTarget.style.color = mounted && theme === "light" ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.5)";
-                  }
+                  color: textSecondary,
                 }}
               >
-                {link.name}
-                <span
-                  className="absolute -bottom-1 left-0 h-[1px] bg-[#00d4ff] transition-all duration-300 group-hover:w-full"
-                  style={{ width: activeLink === link.href ? "100%" : "0" }}
-                />
+                <Github size={18} />
               </Link>
-            ))}
 
-            {/* Theme Toggle */}
-            {mounted && (
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="px-3 py-1.5 rounded font-mono text-[11px] tracking-[1px] uppercase transition-all duration-200"
+              {/* LINKEDIN */}
+              <Link
+                href="https://linkedin.com"
+                target="_blank"
+                className="transition-all duration-300 hover:scale-110"
                 style={{
-                  backgroundColor: "transparent",
-                  border: theme === "light" ? "1px solid rgba(0, 0, 0, 0.25)" : "1px solid rgba(0, 212, 255, 0.25)",
-                  color: theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+                  color: textSecondary,
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = theme === "light" ? "#000000" : "#00d4ff";
-                  e.currentTarget.style.color = theme === "light" ? "#000000" : "#00d4ff";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = theme === "light" ? "rgba(0, 0, 0, 0.25)" : "rgba(0, 212, 255, 0.25)";
-                  e.currentTarget.style.color = theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)";
-                }}
-                aria-label="Toggle theme"
               >
-                {theme === "dark" ? "Light" : "Dark"}
-              </button>
-            )}
-          </div>
+                <Linkedin size={18} />
+              </Link>
 
-          {/* Mobile Menu Button & Theme Toggle */}
-          <div className="lg:hidden flex items-center space-x-2">
-            {mounted && (
+              {/* BUTTON */}
               <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="px-3 py-1.5 rounded font-mono text-[11px] tracking-[1px] uppercase transition-all duration-200"
+                className="px-5 py-2 rounded-xl text-sm font-medium text-white transition-all duration-300 hover:scale-105"
                 style={{
-                  backgroundColor: "transparent",
-                  border: theme === "light" ? "1px solid rgba(0, 0, 0, 0.25)" : "1px solid rgba(0, 212, 255, 0.25)",
-                  color: theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+                  background:
+                    "linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)",
+                  boxShadow:
+                    "0 0 30px rgba(99,102,241,0.35)",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = theme === "light" ? "#000000" : "#00d4ff";
-                  e.currentTarget.style.color = theme === "light" ? "#000000" : "#00d4ff";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = theme === "light" ? "rgba(0, 0, 0, 0.25)" : "rgba(0, 212, 255, 0.25)";
-                  e.currentTarget.style.color = theme === "light" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)";
-                }}
-                aria-label="Toggle theme"
               >
-                {theme === "dark" ? "Light" : "Dark"}
+                Hire Me
               </button>
-            )}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-lg transition-colors"
-              style={{
-                backgroundColor: "transparent",
-                color: "var(--foreground)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--badge-bg)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "transparent";
-              }}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
+            </div>
+
+            {/* MOBILE BUTTONS */}
+            <div className="lg:hidden flex items-center gap-3">
+              {/* MOBILE THEME TOGGLE */}
+              <button
+                onClick={() =>
+                  setTheme(isDark ? "light" : "dark")
+                }
+                className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300"
+                style={{
+                  background: glassBg,
+                  color: textPrimary,
+                  border: `1px solid ${navBorder}`,
+                }}
+              >
+                {isDark ? (
+                  <Sun size={20} />
+                ) : (
+                  <Moon size={20} />
+                )}
+              </button>
+
+              {/* MENU BUTTON */}
+              <button
+                onClick={() => setIsOpen(true)}
+                className="flex items-center justify-center w-11 h-11 rounded-xl transition-all duration-300"
+                style={{
+                  background: glassBg,
+                  color: textPrimary,
+                  border: `1px solid ${navBorder}`,
+                }}
+              >
+                <Menu size={22} />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.nav>
 
-      {/* Mobile Menu */}
-      <MobileMenu
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-        activeLink={activeLink}
-        setActiveLink={setActiveLink}
-        theme={theme}
-        mounted={mounted}
-      />
-    </motion.nav>
+      {/* MOBILE SIDEBAR */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* OVERLAY */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+            />
+
+            {/* SIDEBAR */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{
+                type: "spring",
+                damping: 24,
+              }}
+              className="fixed top-0 right-0 h-full w-[85%] max-w-[360px] z-50 lg:hidden"
+              style={{
+                background: isDark
+                  ? "linear-gradient(180deg, #0B1020 0%, #111827 100%)"
+                  : "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+
+                borderLeft: isDark
+                  ? "1px solid rgba(255,255,255,0.08)"
+                  : "1px solid rgba(0,0,0,0.06)",
+
+                boxShadow:
+                  "-10px 0 40px rgba(0,0,0,0.25)",
+              }}
+            >
+              {/* GLOW */}
+              <div
+                className="absolute top-0 right-0 w-[250px] h-[250px] rounded-full blur-[100px] opacity-30 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)",
+                }}
+              />
+
+              <div className="relative h-full flex flex-col px-6 py-6">
+                {/* TOP */}
+                <div className="flex items-center justify-between mb-12">
+                  <div>
+                    <h2
+                      className="text-xl font-bold"
+                      style={{
+                        color: textPrimary,
+                      }}
+                    >
+                      Mahab Rizwan
+                    </h2>
+
+                    <p
+                      className="text-xs uppercase tracking-[3px] mt-2"
+                      style={{
+                        color: textSecondary,
+                      }}
+                    >
+                      Portfolio Navigation
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    style={{
+                      background: glassBg,
+                      color: textPrimary,
+                    }}
+                  >
+                    <X size={22} />
+                  </button>
+                </div>
+
+                {/* LINKS */}
+                <div className="flex flex-col gap-3">
+                  {navLinks.map((link, index) => (
+                    <motion.div
+                      key={link.name}
+                      initial={{ opacity: 0, x: 40 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: index * 0.08,
+                      }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center justify-between px-5 py-4 rounded-2xl transition-all duration-300"
+                        style={{
+                          background: isDark
+                            ? "rgba(255,255,255,0.04)"
+                            : "rgba(0,0,0,0.03)",
+                        }}
+                      >
+                        <span
+                          className="text-base font-medium"
+                          style={{
+                            color: textPrimary,
+                          }}
+                        >
+                          {link.name}
+                        </span>
+
+                        <span className="text-cyan-400">
+                          →
+                        </span>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* BOTTOM BUTTON */}
+                <div className="mt-auto pt-10">
+                  <button
+                    className="w-full py-4 rounded-2xl text-white font-medium transition-all duration-300 hover:scale-[1.02]"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)",
+
+                      boxShadow:
+                        "0 0 30px rgba(99,102,241,0.35)",
+                    }}
+                  >
+                    Let’s Work Together
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

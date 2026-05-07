@@ -74,13 +74,9 @@ export default function HeroSection() {
 
       {/* Left Dark Overlay */}
       <div
-      className="absolute inset-0 w-full h-full pointer-events-none"
+      className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat pointer-events-none"
       style={{
         backgroundImage: "url(/hero-bg.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center center",
-        backgroundRepeat: "no-repeat",
-        backgroundAttachment: "scroll",
         opacity: isDark ? 0.5 : 0.1,
         }}
         />

@@ -13,17 +13,31 @@ const techBadges = [
 export default function MRMonogram() {
   const [isHovered, setIsHovered] = useState(false);
   const [mounted, setMounted] = useState(false);
+
   const { theme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const centerFill =
-    mounted && theme === "light" ? "#FFFFFF" : "#1A1A1A";
+  const isLight = mounted && theme === "light";
 
-  const centerStroke =
-    mounted && theme === "light" ? "#E5E7EB" : "#27272A";
+  /* LIGHT MODE COLORS */
+  const centerFill = isLight ? "#FFFFFF" : "#111827";
+
+  const centerStroke = isLight
+    ? "rgba(99,102,241,0.18)"
+    : "#27272A";
+
+  const textColor = isLight ? "#111827" : "#FFFFFF";
+
+  const outerRingOpacity = isLight ? 0.55 : 0.3;
+
+  const ringOpacity = isLight ? 0.55 : 0.4;
+
+  const glowShadow = isLight
+    ? "drop-shadow(0px 0px 30px rgba(99,102,241,0.18))"
+    : "drop-shadow(0px 0px 45px rgba(99,102,241,0.25))";
 
   return (
     <motion.div
@@ -50,21 +64,47 @@ export default function MRMonogram() {
         justify-center
       "
     >
+      {/* LIGHT MODE GLOW */}
+      {isLight && (
+        <>
+          <div
+            className="absolute w-[65%] h-[65%] rounded-full blur-[90px] opacity-40"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(99,102,241,0.20) 0%, rgba(20,184,166,0.15) 45%, transparent 75%)",
+            }}
+          />
+
+          <div
+            className="absolute w-[45%] h-[45%] rounded-full blur-[70px] opacity-30"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(255,255,255,0.95) 0%, transparent 70%)",
+            }}
+          />
+        </>
+      )}
+
       <motion.div
-        animate={{ y: [0, -12, 0] }}
+        animate={{
+          y: [0, -12, 0],
+        }}
         transition={{
           duration: 4,
           repeat: Infinity,
           ease: "easeInOut",
         }}
         className="relative w-full h-full"
+        style={{
+          filter: glowShadow,
+        }}
       >
         <svg
           viewBox="0 0 400 400"
           className="w-full h-full"
           preserveAspectRatio="xMidYMid meet"
         >
-          {/* Outer Ring */}
+          {/* OUTER RING */}
           <motion.circle
             cx="200"
             cy="200"
@@ -73,14 +113,20 @@ export default function MRMonogram() {
             stroke="url(#gradient1)"
             strokeWidth="2"
             strokeDasharray="4 4"
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            animate={{
+              opacity: [
+                outerRingOpacity,
+                outerRingOpacity + 0.2,
+                outerRingOpacity,
+              ],
+            }}
             transition={{
               duration: 3,
               repeat: Infinity,
             }}
           />
 
-          {/* Ring 2 */}
+          {/* TEAL RING */}
           <motion.g
             animate={{
               rotate: isHovered ? -360 : -180,
@@ -103,7 +149,7 @@ export default function MRMonogram() {
               stroke="#14B8A6"
               strokeWidth="1.5"
               strokeDasharray="8 8"
-              opacity="0.4"
+              opacity={ringOpacity}
             />
 
             {[0, 90, 180, 270].map((angle) => (
@@ -117,7 +163,7 @@ export default function MRMonogram() {
             ))}
           </motion.g>
 
-          {/* Ring 1 */}
+          {/* INDIGO RING */}
           <motion.g
             animate={{
               rotate: isHovered ? 360 : 180,
@@ -140,7 +186,7 @@ export default function MRMonogram() {
               stroke="#6366F1"
               strokeWidth="1.5"
               strokeDasharray="8 8"
-              opacity="0.4"
+              opacity={ringOpacity}
             />
 
             {[0, 90, 180, 270].map((angle) => (
@@ -154,7 +200,7 @@ export default function MRMonogram() {
             ))}
           </motion.g>
 
-          {/* Center */}
+          {/* CENTER CIRCLE */}
           <circle
             cx="200"
             cy="200"
@@ -164,6 +210,18 @@ export default function MRMonogram() {
             strokeWidth="2"
           />
 
+          {/* INNER GLOW */}
+          {isLight && (
+            <circle
+              cx="200"
+              cy="200"
+              r="70"
+              fill="url(#innerGlow)"
+              opacity="0.8"
+            />
+          )}
+
+          {/* MR TEXT */}
           <text
             x="200"
             y="220"
@@ -171,12 +229,14 @@ export default function MRMonogram() {
             style={{
               fontSize: "72px",
               fontWeight: 700,
-              fill: mounted ? "#ffffff" : "#666666",
+              fill: textColor,
+              letterSpacing: "-2px",
             }}
           >
             MR
           </text>
 
+          {/* GRADIENTS */}
           <defs>
             <linearGradient
               id="gradient1"
@@ -188,10 +248,21 @@ export default function MRMonogram() {
               <stop offset="0%" stopColor="#6366F1" />
               <stop offset="100%" stopColor="#14B8A6" />
             </linearGradient>
+
+            <radialGradient id="innerGlow">
+              <stop
+                offset="0%"
+                stopColor="rgba(255,255,255,0.95)"
+              />
+              <stop
+                offset="100%"
+                stopColor="rgba(255,255,255,0)"
+              />
+            </radialGradient>
           </defs>
         </svg>
 
-        {/* Badges */}
+        {/* TECH BADGES */}
         {techBadges.map((badge, index) => {
           const badgeX =
             50 + 42 * Math.cos((badge.angle * Math.PI) / 180);
@@ -202,7 +273,9 @@ export default function MRMonogram() {
           return (
             <motion.div
               key={badge.name}
-              animate={{ rotate: 360 }}
+              animate={{
+                rotate: 360,
+              }}
               transition={{
                 duration: isHovered ? 15 : 30,
                 repeat: Infinity,
@@ -220,13 +293,17 @@ export default function MRMonogram() {
                 }}
               >
                 <motion.div
-                  animate={{ rotate: -360 }}
+                  animate={{
+                    rotate: -360,
+                  }}
                   transition={{
                     duration: isHovered ? 15 : 30,
                     repeat: Infinity,
                     ease: "linear",
                   }}
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{
+                    scale: 1.1,
+                  }}
                   className="
                     px-3
                     py-1.5
@@ -237,9 +314,13 @@ export default function MRMonogram() {
                     text-white
                     shadow-xl
                     whitespace-nowrap
+                    backdrop-blur-md
                   "
                   style={{
                     backgroundColor: badge.color,
+                    boxShadow: isLight
+                      ? "0 10px 25px rgba(0,0,0,0.08)"
+                      : "0 10px 25px rgba(0,0,0,0.35)",
                   }}
                 >
                   {badge.name}
