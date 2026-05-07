@@ -92,7 +92,7 @@ export default function HeroSection() {
       />
 
       <div className="container mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center min-h-[calc(100vh-8rem)]">
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[calc(100vh-8rem)] py-10">
           {/* LEFT SIDE - Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -156,7 +156,7 @@ export default function HeroSection() {
               <h1
                 className="font-black uppercase tracking-tight leading-[0.9]"
                 style={{
-                  fontSize: "clamp(40px, 8vw, 80px)",
+                  fontSize: "clamp(2.8rem, 8vw, 5.5rem)",
                   letterSpacing: "-1px",
                   color: isDark ? "#ffffff" : "#0a0a0a",
                   textShadow: isDark
@@ -174,7 +174,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="font-mono uppercase tracking-[3.5px] leading-[1.9] relative z-10 text-[9px] md:text-[10.5px]"
+              className="font-mono uppercase tracking-[2px] sm:tracking-[3px] leading-[1.9] relative z-10 text-[9px] md:text-[10.5px]"
               style={{
                 color: isDark ? "rgba(255,255,255,0.38)" : "rgba(0,0,0,0.45)",
               }}
@@ -296,7 +296,7 @@ export default function HeroSection() {
           </motion.div>
 
           {/* RIGHT SIDE - MR Monogram */}
-          <div className="flex items-center justify-center mx-auto md:mx-0 mt-6 md:mt-0">
+          <div className="flex items-center justify-center w-full">
             <MRMonogram />
           </div>
         </div>
@@ -306,7 +306,7 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex justify-center mt-[-75px]  mb-8 relative z-10 "
+          className="flex justify-center mt-8 mb-8 relative z-10"
         >
           <button
             onClick={() => {

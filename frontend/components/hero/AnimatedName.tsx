@@ -29,12 +29,12 @@ export default function AnimatedName({ name }: AnimatedNameProps) {
       y: 0,
       rotateX: 0,
       transition: {
-        duration: 0.8,
-        ease: "easeIn",
-      },
+      duration: 0.5,
+      ease: "easeOut",
     },
+  },
     hover: {
-      scale: 1.2,
+      scale: 1.08,
       y: -10,
       rotateY: 20,
       transition: {
