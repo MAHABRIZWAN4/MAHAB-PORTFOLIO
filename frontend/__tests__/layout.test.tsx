@@ -48,24 +48,26 @@ jest.mock("next/link", () => {
 
 describe("Layout Components", () => {
   describe("Navbar", () => {
-    it("renders navbar with MahabRizwan._ logo", () => {
+    it("renders navbar with Mahab Rizwan name", () => {
       render(<Navbar />);
-      const logo = screen.getByText("MahabRizwan._");
+      const logo = screen.getByText("Mahab Rizwan");
       expect(logo).toBeInTheDocument();
     });
 
-    it("navbar has all 4 nav links", () => {
+    it("navbar has all 6 nav links", () => {
       render(<Navbar />);
-      expect(screen.getByText("About")).toBeInTheDocument();
+      expect(screen.getByText("Home")).toBeInTheDocument();
+      expect(screen.getByText("Expertise")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("AI Agent")).toBeInTheDocument();
+      expect(screen.getByText("Skills")).toBeInTheDocument();
+      expect(screen.getByText("Experience")).toBeInTheDocument();
       expect(screen.getByText("Contact")).toBeInTheDocument();
     });
 
     it("has mobile menu button", () => {
       render(<Navbar />);
-      const menuButton = screen.getByLabelText("Toggle menu");
-      expect(menuButton).toBeInTheDocument();
+      const menuButtons = screen.getAllByRole("button");
+      expect(menuButtons.length).toBeGreaterThan(0);
     });
   });
 

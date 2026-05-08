@@ -296,8 +296,8 @@ export default function HeroSection() {
           </motion.div>
 
           {/* RIGHT SIDE - MR Monogram */}
-          <div className="flex items-center justify-center w-full">
-            <MRMonogram />
+         <div className="flex items-center justify-center mx-auto md:mx-0 mt-6 md:mt-0">
+          <MRMonogram />
           </div>
         </div>
 
