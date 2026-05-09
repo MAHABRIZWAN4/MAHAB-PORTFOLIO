@@ -46,7 +46,7 @@ export default function WorkSection() {
           borderTop: `1px solid ${borderColor}`,
         }}
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto bg-green-500">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             <div className="flex-1 w-full">
               <div className="h-24 w-48 bg-gray-700 animate-pulse rounded mb-6" />
@@ -191,7 +191,7 @@ export default function WorkSection() {
           </div>
 
           {/* RIGHT SIDE - Video with perfect responsive sizing */}
-          <div className="flex-1 flex justify-center lg:justify-end w-full lg:w-auto">
+          <div className="flex-1   flex justify-center lg:justify-end w-full lg:w-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -217,7 +217,7 @@ export default function WorkSection() {
               />
 
               {/* Video Container */}
-              <div className="relative z-10  overflow-hidden aspect-video">
+              <div className="relative z-10 border-r-red-500 overflow-hidden aspect-video">
                 <video
                   autoPlay
                   loop
