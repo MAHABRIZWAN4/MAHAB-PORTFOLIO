@@ -112,7 +112,7 @@ export default function ExpertiseSection() {
   const subtitleColor = isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.4)"
   const labelColor = isDark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.35)"
   const tagColor = isDark ? "#f472b6" : "#be185d"
-  const bgOpacity = isDark ? 0.07 : 0.04
+  const bgOpacity = isDark ? 0.15 : 0.08
 
   if (loading) {
     return (
@@ -171,6 +171,7 @@ export default function ExpertiseSection() {
           className="absolute inset-0"
           style={{
             background: `linear-gradient(to bottom, ${overlayTop} 0%, ${overlayMiddle} 50%, ${overlayTop} 100%)`,
+            opacity: 0.6,
           }}
         />
       </div>
@@ -229,9 +230,10 @@ export default function ExpertiseSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="h-full"
               >
                 <div
-                  className="p-5 md:p-7 rounded-xl transition-all duration-300 hover:-translate-y-1"
+                  className="h-full p-5 md:p-7 rounded-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
                   style={{
                     background: cardBg,
                     border: `1px solid ${cardBorder}`,
