@@ -24,7 +24,6 @@ export default function WorkSection() {
         setLoading(false)
       }
     }
-
     fetchWork()
   }, [])
 
@@ -41,10 +40,7 @@ export default function WorkSection() {
       <section
         id="work"
         className="relative py-24 px-4 sm:px-6 lg:px-8"
-        style={{
-          background: baseBg,
-          borderTop: `1px solid ${borderColor}`,
-        }}
+        style={{ background: baseBg, borderTop: `1px solid ${borderColor}` }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -62,23 +58,18 @@ export default function WorkSection() {
     )
   }
 
-  if (!work) {
-    return null
-  }
+  if (!work) return null
 
   return (
     <section
       id="work"
       className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
-      style={{
-        background: baseBg,
-        borderTop: `1px solid ${borderColor}`,
-      }}
+      style={{ background: baseBg, borderTop: `1px solid ${borderColor}` }}
     >
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16 xl:gap-20">
 
-          {/* LEFT SIDE - Content */}
+          {/* LEFT SIDE */}
           <div className="flex-1 w-full lg:w-auto">
             <div className="mb-8">
               <div className="overflow-hidden">
@@ -88,11 +79,7 @@ export default function WorkSection() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
                   className="text-[56px] sm:text-[72px] lg:text-[88px] font-bold tracking-tight"
-                  style={{
-                    fontFamily: "Space Grotesk, sans-serif",
-                    color: headingColor,
-                    lineHeight: 1,
-                  }}
+                  style={{ fontFamily: "Space Grotesk, sans-serif", color: headingColor, lineHeight: 1 }}
                 >
                   My
                 </motion.h2>
@@ -104,11 +91,7 @@ export default function WorkSection() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.08, ease: [0.33, 1, 0.68, 1] }}
                   className="text-[56px] sm:text-[72px] lg:text-[88px] font-bold tracking-tight"
-                  style={{
-                    fontFamily: "Space Grotesk, sans-serif",
-                    color: headingColor,
-                    lineHeight: 1,
-                  }}
+                  style={{ fontFamily: "Space Grotesk, sans-serif", color: headingColor, lineHeight: 1 }}
                 >
                   Work
                 </motion.h2>
@@ -121,10 +104,7 @@ export default function WorkSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-[14px] sm:text-[15px] leading-[1.7] max-w-[480px] mb-10"
-              style={{
-                fontFamily: "Inter, sans-serif",
-                color: descColor,
-              }}
+              style={{ fontFamily: "Inter, sans-serif", color: descColor }}
             >
               {work.description}
             </motion.p>
@@ -136,19 +116,13 @@ export default function WorkSection() {
               transition={{ duration: 0.5, delay: 0.35 }}
               className="group cursor-pointer inline-block"
               onClick={() => {
-                document.querySelector('#projects')?.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start'
-                })
+                document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }}
             >
               <div className="flex items-center gap-3">
                 <span
                   className="text-[13px] uppercase tracking-wider"
-                  style={{
-                    fontFamily: "monospace",
-                    color: labelColor,
-                  }}
+                  style={{ fontFamily: "monospace", color: labelColor }}
                 >
                   {work.featuredLabel}
                 </span>
@@ -158,36 +132,24 @@ export default function WorkSection() {
               <div className="flex items-center gap-2 mt-3 group">
                 <span
                   className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold tracking-tight transition-all duration-300 group-hover:translate-x-1"
-                  style={{
-                    fontFamily: "Space Grotesk, sans-serif",
-                    color: headingColor,
-                  }}
+                  style={{ fontFamily: "Space Grotesk, sans-serif", color: headingColor }}
                 >
                   {work.buttonText}
                 </span>
                 <motion.svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
+                  width="28" height="28" viewBox="0 0 24 24" fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110"
                   animate={{ x: [0, 4, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
                 >
-                  <path
-                    d="M5 12H19M19 12L12 5M19 12L12 19"
-                    stroke={headingColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke={headingColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </motion.svg>
               </div>
             </motion.div>
           </div>
 
-          {/* RIGHT SIDE - Video */}
+          {/* RIGHT SIDE - Video + Handwriting annotation below */}
           <div className="w-full lg:w-auto lg:self-start">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -196,33 +158,97 @@ export default function WorkSection() {
               transition={{ duration: 0.7, delay: 0.15, ease: [0.33, 1, 0.68, 1] }}
               className="relative w-full sm:w-[400px] md:w-[480px] lg:w-[520px] xl:w-[580px]"
             >
-              {/* Glow effect */}
+              {/* Glow */}
               <div
                 className="absolute inset-0 rounded-2xl opacity-20 blur-3xl"
-                style={{
-                  background: "linear-gradient(135deg, #a855f7, #ec4899)",
-                  transform: "scale(0.8)",
-                }}
+                style={{ background: "linear-gradient(135deg, #a855f7, #ec4899)", transform: "scale(0.8)" }}
               />
 
-              {/* Border */}
-              <div
-                className="absolute inset-0 rounded-2xl"
-                style={{ border: `1px solid ${borderColor}` }}
-              />
+              {/* Border overlay */}
+              <div className="absolute inset-0 rounded-2xl" style={{ border: `1px solid ${borderColor}` }} />
 
-              {/* Video — aspect-video = 16:9 ratio, responsive */}
+              {/* Video */}
               <div className="relative z-10 overflow-hidden rounded-2xl aspect-video">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover"
-                >
+                <video autoPlay loop muted playsInline className="w-full h-full object-cover">
                   <source src="/work-video.webm" type="video/webm" />
                 </video>
               </div>
+
+              {/* ── Handwriting annotation below video ── */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="relative z-10 flex items-center gap-3 mt-5 pl-8"
+              >
+                {/* Curved arrow image from public folder */}
+                <div className="relative w-14 h-14 flex-shrink-0">
+                  <img
+                    src="/curved-arrow.png"
+                    alt=""
+                    className="w-full h-full object-contain opacity-70"
+                    style={{ transform: "scaleX(-1) rotate(-20deg)" }}
+                  />
+                </div>
+
+                {/* Animated handwriting SVG text */}
+                <svg
+                  viewBox="0 0 260 60"
+                  className="w-[200px] sm:w-[240px]"
+                  style={{ overflow: "visible" }}
+                >
+                  <text
+                    x="0" y="44"
+                    style={{
+                      fontFamily: "'Caveat', cursive",
+                      fontSize: "38px",
+                      fill: isDark ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.75)",
+                      fontWeight: 600,
+                    }}
+                  >
+                    <motion.tspan
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: 0.6 }}
+                    >
+                      V
+                    </motion.tspan>
+                    <motion.tspan
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: 0.7 }}
+                    >
+                      iew{" "}
+                    </motion.tspan>
+                    <motion.tspan
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: 0.85 }}
+                    >
+                      Project
+                    </motion.tspan>
+                  </text>
+
+                  {/* Underline scribble */}
+                  <motion.path
+                    d="M 2 52 Q 80 58 160 50 Q 200 47 240 53"
+                    stroke={isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)"}
+                    strokeWidth="1.5"
+                    fill="none"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    whileInView={{ pathLength: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
+                  />
+                </svg>
+              </motion.div>
+              {/* Load Caveat font for handwriting style */}
+              <style>{`@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');`}</style>
             </motion.div>
           </div>
 
