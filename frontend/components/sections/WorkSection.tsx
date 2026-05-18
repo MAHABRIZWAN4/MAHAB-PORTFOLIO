@@ -11,9 +11,7 @@ export default function WorkSection() {
   const [mounted, setMounted] = useState(false)
   const { theme } = useTheme()
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
     async function fetchWork() {
@@ -33,7 +31,10 @@ export default function WorkSection() {
   const borderColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"
   const headingColor = isDark ? "#ffffff" : "#0a0a0a"
   const descColor = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.7)"
-  const labelColor = isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)"
+
+  const scrollToProjects = () => {
+    document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   if (loading) {
     return (
@@ -47,10 +48,9 @@ export default function WorkSection() {
             <div className="flex-1 w-full">
               <div className="h-24 w-48 bg-gray-700 animate-pulse rounded mb-6" />
               <div className="h-28 w-full max-w-md bg-gray-700 animate-pulse rounded mb-8" />
-              <div className="h-12 w-40 bg-gray-700 animate-pulse rounded" />
             </div>
             <div className="flex-1 flex justify-center lg:justify-end">
-              <div className="w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[440px] aspect-square bg-gray-700 animate-pulse rounded-2xl" />
+              <div className="w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[440px] aspect-video bg-gray-700 animate-pulse rounded-2xl" />
             </div>
           </div>
         </div>
@@ -71,6 +71,7 @@ export default function WorkSection() {
 
           {/* LEFT SIDE */}
           <div className="flex-1 w-full lg:w-auto">
+            {/* Heading */}
             <div className="mb-8">
               <div className="overflow-hidden">
                 <motion.h2
@@ -98,58 +99,22 @@ export default function WorkSection() {
               </div>
             </div>
 
+            {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-[14px] sm:text-[15px] leading-[1.7] max-w-[480px] mb-10"
+              className="text-[14px] sm:text-[15px] leading-[1.7] max-w-[480px]"
               style={{ fontFamily: "Inter, sans-serif", color: descColor }}
             >
               {work.description}
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="group cursor-pointer inline-block"
-              onClick={() => {
-                document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }}
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className="text-[13px] uppercase tracking-wider"
-                  style={{ fontFamily: "monospace", color: labelColor }}
-                >
-                  {work.featuredLabel}
-                </span>
-                <div className="w-8 h-px" style={{ background: labelColor }} />
-              </div>
-
-              <div className="flex items-center gap-2 mt-3 group">
-                <span
-                  className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold tracking-tight transition-all duration-300 group-hover:translate-x-1"
-                  style={{ fontFamily: "Space Grotesk, sans-serif", color: headingColor }}
-                >
-                  {work.buttonText}
-                </span>
-                <motion.svg
-                  width="28" height="28" viewBox="0 0 24 24" fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110"
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-                >
-                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke={headingColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </motion.svg>
-              </div>
-            </motion.div>
+            {/* ← FEATURED PROJECT / View Project button REMOVED from here */}
           </div>
 
-          {/* RIGHT SIDE - Video + Handwriting annotation below */}
+          {/* RIGHT SIDE - Video + Handwriting annotation */}
           <div className="w-full lg:w-auto lg:self-start">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -163,7 +128,6 @@ export default function WorkSection() {
                 className="absolute inset-0 rounded-2xl opacity-20 blur-3xl"
                 style={{ background: "linear-gradient(135deg, #a855f7, #ec4899)", transform: "scale(0.8)" }}
               />
-
               {/* Border overlay */}
               <div className="absolute inset-0 rounded-2xl" style={{ border: `1px solid ${borderColor}` }} />
 
@@ -174,64 +138,52 @@ export default function WorkSection() {
                 </video>
               </div>
 
-              {/* ── Handwriting annotation below video ── */}
+              {/* ── Handwriting annotation — CLICKABLE, scrolls to #projects ── */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="relative z-10 flex items-center gap-3 mt-5 pl-8"
+                onClick={scrollToProjects}
+                className="relative z-10 flex items-center gap-3 mt-5 pl-6 cursor-pointer group select-none"
+                title="View Projects"
               >
-                {/* Curved arrow image from public folder */}
+                {/* Downward curved arrow pointing toward the section below */}
                 <div className="relative w-14 h-14 flex-shrink-0">
                   <img
                     src="/curved-arrow.png"
                     alt=""
-                    className="w-full h-full object-contain opacity-70"
-                    style={{ transform: "scaleX(-1) rotate(-20deg)" }}
+                    className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      // flip horizontally + rotate so it curves downward
+                      transform: "scaleX(-1) rotate(160deg)",
+                      transformOrigin: "center",
+                    }}
                   />
                 </div>
 
-                {/* Animated handwriting SVG text */}
+                {/* Animated handwriting "View Project" */}
                 <svg
                   viewBox="0 0 260 60"
                   className="w-[200px] sm:w-[240px]"
                   style={{ overflow: "visible" }}
                 >
-                  <text
+                  <motion.text
                     x="0" y="44"
                     style={{
                       fontFamily: "'Caveat', cursive",
                       fontSize: "38px",
-                      fill: isDark ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.75)",
+                      fill: isDark ? "rgba(255,255,255,0.85)" : "#000000",
                       fontWeight: 600,
                     }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.65 }}
+                    className="group-hover:fill-white transition-all duration-300"
                   >
-                    <motion.tspan
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: 0.6 }}
-                    >
-                      V
-                    </motion.tspan>
-                    <motion.tspan
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: 0.7 }}
-                    >
-                      iew{" "}
-                    </motion.tspan>
-                    <motion.tspan
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: 0.85 }}
-                    >
-                      Project
-                    </motion.tspan>
-                  </text>
+                    View Project
+                  </motion.text>
 
                   {/* Underline scribble */}
                   <motion.path
@@ -247,7 +199,7 @@ export default function WorkSection() {
                   />
                 </svg>
               </motion.div>
-              {/* Load Caveat font for handwriting style */}
+
               <style>{`@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');`}</style>
             </motion.div>
           </div>
