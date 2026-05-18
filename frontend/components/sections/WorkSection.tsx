@@ -197,7 +197,7 @@ export default function WorkSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.15, ease: [0.33, 1, 0.68, 1] }}
-              className="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[460px] xl:max-w-[500px] mx-auto lg:mx-0"
+              className="relative w-[260px] sm:w-[320px]  md:w-[420px] lg:w-[520px] xl:w-[580px] mx-auto lg:mx-0"
             >
               {/* Premium glow effect */}
               <div
@@ -217,7 +217,7 @@ export default function WorkSection() {
               />
 
               {/* Video Container */}
-              <div className="relative z-10 border-r-red-500 overflow-hidden aspect-video">
+              <div className="relative z-10 border-r-red-500 md:h-[500px] md:w-[400px]  overflow-hidden aspect-video  ">
                 <video
                   autoPlay
                   loop
