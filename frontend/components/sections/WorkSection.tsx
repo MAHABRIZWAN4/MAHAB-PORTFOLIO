@@ -46,7 +46,7 @@ export default function WorkSection() {
           borderTop: `1px solid ${borderColor}`,
         }}
       >
-        <div className="max-w-7xl mx-auto bg-green-500">
+        <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             <div className="flex-1 w-full">
               <div className="h-24 w-48 bg-gray-700 animate-pulse rounded mb-6" />
@@ -76,11 +76,10 @@ export default function WorkSection() {
       }}
     >
       <div className="max-w-7xl mx-auto">
-        {/* Top Section: Heading + Description + Video */}
         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16 xl:gap-20">
+
           {/* LEFT SIDE - Content */}
           <div className="flex-1 w-full lg:w-auto">
-            {/* Premium Heading "My Work" split into two lines */}
             <div className="mb-8">
               <div className="overflow-hidden">
                 <motion.h2
@@ -116,7 +115,6 @@ export default function WorkSection() {
               </div>
             </div>
 
-            {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -131,7 +129,6 @@ export default function WorkSection() {
               {work.description}
             </motion.p>
 
-            {/* Featured Project with Arrow - using Sanity data */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -157,7 +154,7 @@ export default function WorkSection() {
                 </span>
                 <div className="w-8 h-px" style={{ background: labelColor }} />
               </div>
-              
+
               <div className="flex items-center gap-2 mt-3 group">
                 <span
                   className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold tracking-tight transition-all duration-300 group-hover:translate-x-1"
@@ -190,16 +187,16 @@ export default function WorkSection() {
             </motion.div>
           </div>
 
-          {/* RIGHT SIDE - Video with perfect responsive sizing */}
-          <div className="flex-1   flex justify-center lg:justify-end w-full lg:w-auto">
+          {/* RIGHT SIDE - Video */}
+          <div className="w-full lg:w-auto lg:self-start">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.15, ease: [0.33, 1, 0.68, 1] }}
-              className="relative w-[260px] sm:w-[320px]  md:w-[420px] lg:w-[520px] xl:w-[580px] mx-auto lg:mx-0"
+              className="relative w-full sm:w-[400px] md:w-[480px] lg:w-[520px] xl:w-[580px]"
             >
-              {/* Premium glow effect */}
+              {/* Glow effect */}
               <div
                 className="absolute inset-0 rounded-2xl opacity-20 blur-3xl"
                 style={{
@@ -207,17 +204,15 @@ export default function WorkSection() {
                   transform: "scale(0.8)",
                 }}
               />
-              
-              {/* Subtle border */}
+
+              {/* Border */}
               <div
                 className="absolute inset-0 rounded-2xl"
-                style={{
-                  border: `1px solid ${borderColor}`,
-                }}
+                style={{ border: `1px solid ${borderColor}` }}
               />
 
-              {/* Video Container */}
-              <div className="relative z-10 border-r-red-500 md:h-[500px] md:w-[400px]  overflow-hidden aspect-video  ">
+              {/* Video — aspect-video = 16:9 ratio, responsive */}
+              <div className="relative z-10 overflow-hidden rounded-2xl aspect-video">
                 <video
                   autoPlay
                   loop
@@ -230,17 +225,14 @@ export default function WorkSection() {
               </div>
             </motion.div>
           </div>
+
         </div>
       </div>
 
       <style jsx>{`
         @keyframes float {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
         }
       `}</style>
     </section>
