@@ -93,6 +93,10 @@ function HackerCard({
             ref={imageRef}
             style={{ y: parallaxY, scale: 1.15 }}
             className="absolute inset-0"
+            animate={{
+              filter: hovered ? "blur(8px)" : "blur(0px)",
+            }}
+            transition={{ duration: 0.3 }}
           >
             {project.coverImage?.asset ? (
               <img
@@ -128,19 +132,6 @@ function HackerCard({
             }}
           />
 
-          {/* Category badge */}
-          <div
-            className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold tracking-widest uppercase"
-            style={{
-              fontFamily: "monospace",
-              color: colors.accent,
-              background: colors.tag,
-              border: `1px solid ${colors.accent}33`,
-            }}
-          >
-            {project.category || "PROJECT"}
-          </div>
-
           {/* Hover overlay — tech stack */}
           <AnimatePresence>
             {hovered && (
@@ -149,7 +140,7 @@ function HackerCard({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="absolute inset-0 flex flex-col justify-center items-center gap-2 p-4 backdrop-blur-sm bg-white/95 dark:bg-[rgba(10,14,24,0.92)]"
+                className="absolute inset-0 flex flex-col justify-center items-center gap-2 p-4 backdrop-blur-sm bg-white/80 dark:bg-[rgba(10,14,24,0.85)]"
               >
                 <p
                   className="text-[10px] uppercase tracking-widest mb-2 opacity-70"
@@ -183,6 +174,21 @@ function HackerCard({
 
         {/* ── Card content ── */}
         <div className="flex-1 flex flex-col p-5 gap-3">
+          {/* Category badge */}
+          <div className="flex items-center gap-2 mb-1">
+            <span
+              className="px-2 py-0.5 rounded text-[10px] font-bold tracking-widest uppercase w-fit"
+              style={{
+                fontFamily: "monospace",
+                color: colors.accent,
+                background: colors.tag,
+                border: `1px solid ${colors.accent}33`,
+              }}
+            >
+              {project.category || "PROJECT"}
+            </span>
+          </div>
+
           {/* Terminal prompt line */}
           <div className="flex items-center gap-2">
             <span style={{ color: colors.accent, fontFamily: "monospace", fontSize: "12px" }}>❯</span>
