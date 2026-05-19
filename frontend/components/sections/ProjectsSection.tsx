@@ -2,12 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { getProjects, type Project, urlFor } from "@/lib/sanity";
+import { getProjects, getProjectsConfig, type Project, type ProjectsConfig, urlFor } from "@/lib/sanity";
 
-const categories = ["All", "AI", "Full Stack", "Backend", "Web3"];
-
-// Color coding by project type — terminal-inspired palette
-const categoryColors: Record<string, { accent: string; glow: string; tag: string }> = {
+// Default fallbacks
+const defaultCategories = ["All", "AI", "Full Stack", "Backend", "Web3"];
+const defaultCategoryColors: Record<string, { accent: string; glow: string; tag: string }> = {
   AI:           { accent: "#00ff9d", glow: "rgba(0,255,157,0.15)", tag: "rgba(0,255,157,0.12)" },
   "Full Stack": { accent: "#00c8ff", glow: "rgba(0,200,255,0.15)", tag: "rgba(0,200,255,0.12)" },
   Backend:      { accent: "#ff6b35", glow: "rgba(255,107,53,0.15)", tag: "rgba(255,107,53,0.12)" },
@@ -15,7 +14,15 @@ const categoryColors: Record<string, { accent: string; glow: string; tag: string
   All:          { accent: "#00ff9d", glow: "rgba(0,255,157,0.10)", tag: "rgba(0,255,157,0.10)" },
 };
 
-function HackerCard({ project, index }: { project: Project; index: number }) {
+function HackerCard({
+  project,
+  index,
+  categoryColors
+}: {
+  project: Project;
+  index: number;
+  categoryColors: Record<string, { accent: string; glow: string; tag: string }>;
+}) {
   const [hovered, setHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
@@ -235,7 +242,47 @@ export default function ProjectsSection() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [typedText, setTypedText] = useState("");
-  const fullText = "Featured Projects";
+
+  // Sanity config state
+  const [config, setConfig] = useState<ProjectsConfig | null>(null);
+  const [categories, setCategories] = useState<string[]>(defaultCategories);
+  const [categoryColors, setCategoryColors] = useState(defaultCategoryColors);
+
+  const fullText = config?.sectionHeading || "Featured Projects";
+
+  // Fetch projects config
+  useEffect(() => {
+    async function fetchConfig() {
+      try {
+        const data = await getProjectsConfig();
+        if (data) {
+          setConfig(data);
+
+          // Build categories array with "All" first
+          const cats = ["All", ...data.categories.map(c => c.name)];
+          setCategories(cats);
+
+          // Build categoryColors object
+          const colors: Record<string, { accent: string; glow: string; tag: string }> = {
+            All: { accent: data.categories[0]?.accentColor || "#00ff9d", glow: data.categories[0]?.glowColor || "rgba(0,255,157,0.10)", tag: data.categories[0]?.tagColor || "rgba(0,255,157,0.10)" },
+          };
+
+          data.categories.forEach(cat => {
+            colors[cat.name] = {
+              accent: cat.accentColor,
+              glow: cat.glowColor,
+              tag: cat.tagColor,
+            };
+          });
+
+          setCategoryColors(colors);
+        }
+      } catch (error) {
+        console.error("Error fetching projects config:", error);
+      }
+    }
+    fetchConfig();
+  }, []);
 
   // Typing animation for heading
   useEffect(() => {
@@ -250,7 +297,7 @@ export default function ProjectsSection() {
       }
     }, 60);
     return () => clearInterval(interval);
-  }, []);
+  }, [fullText]);
 
   useEffect(() => {
     async function fetchProjects() {
@@ -313,7 +360,7 @@ export default function ProjectsSection() {
               className="ml-3 text-[11px] tracking-widest uppercase text-gray-400 dark:text-gray-600"
               style={{ fontFamily: "monospace" }}
             >
-              ~/portfolio/projects
+              {config?.terminalPath || "~/portfolio/projects"}
             </span>
           </div>
 
@@ -337,7 +384,7 @@ export default function ProjectsSection() {
             className="text-[14px] max-w-xl mx-auto leading-relaxed text-gray-500 dark:text-gray-400"
             style={{ fontFamily: "monospace" }}
           >
-            {"// A showcase of work in AI, full-stack, and backend engineering"}
+            {config?.sectionDescription || "// A showcase of work in AI, full-stack, and backend engineering"}
           </p>
         </motion.div>
 
@@ -422,7 +469,7 @@ export default function ProjectsSection() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <HackerCard project={project} index={index} />
+                  <HackerCard project={project} index={index} categoryColors={categoryColors} />
                 </motion.div>
               ))}
             </AnimatePresence>

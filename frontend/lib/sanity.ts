@@ -74,6 +74,19 @@ export interface Footer {
   }>;
 }
 
+export interface ProjectsConfig {
+  _id: string;
+  sectionHeading: string;
+  sectionDescription: string;
+  terminalPath: string;
+  categories: Array<{
+    name: string;
+    accentColor: string;
+    glowColor: string;
+    tagColor: string;
+  }>;
+}
+
 export async function getProjects(): Promise<Project[]> {
   const query = `*[_type == "project"] | order(order asc) {
     _id,
@@ -144,6 +157,18 @@ export async function getFooter(): Promise<Footer | null> {
     githubUrl,
     linkedinUrl,
     builtWithTech
+  }`;
+
+  return client.fetch(query);
+}
+
+export async function getProjectsConfig(): Promise<ProjectsConfig | null> {
+  const query = `*[_type == "projectsConfig"][0] {
+    _id,
+    sectionHeading,
+    sectionDescription,
+    terminalPath,
+    categories
   }`;
 
   return client.fetch(query);
