@@ -169,18 +169,22 @@ export default function WorkSection() {
                   style={{ overflow: "visible" }}
                 >
                   <motion.text
-                    x="0" y="44"
+                    x="0"
+                    y="44"
                     style={{
                       fontFamily: "'Caveat', cursive",
                       fontSize: "38px",
-                      fill: isDark ? "rgba(255,255,255,0.85)" : "#000000",
                       fontWeight: 600,
+                      // Inline fill ko hata diya taake hydration ka masla na ho
                     }}
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.65 }}
-                    className="group-hover:fill-white transition-all duration-300"
+
+                    // Light Mode ke liye: fill-black aur hover par slate-700
+                    // Dark Mode ke liye: dark:fill-white/85 aur hover par full white
+                    className="fill-black group-hover:fill-slate-700 dark:fill-white/85 dark:group-hover:fill-white transition-colors duration-300"
                   >
                     View Project
                   </motion.text>
@@ -188,7 +192,8 @@ export default function WorkSection() {
                   {/* Underline scribble */}
                   <motion.path
                     d="M 2 52 Q 80 58 160 50 Q 200 47 240 53"
-                    stroke={isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)"}
+                    stroke="currentColor" // Yeh automatic parent text ka color le lega (Light me blackish, Dark me whitish)
+                    className="text-black/30 dark:text-white/40"
                     strokeWidth="1.5"
                     fill="none"
                     strokeLinecap="round"
