@@ -5,5 +5,6 @@ import expertise from './expertise'
 import work from './work'
 import projectsConfig from './projectsConfig'
 import navbar from './navbar'
+import skill from './skill'
 
-export const schemaTypes = [project, hero, footer, expertise, work, projectsConfig, navbar]
+export const schemaTypes = [project, hero, footer, expertise, work, projectsConfig, navbar, skill]
