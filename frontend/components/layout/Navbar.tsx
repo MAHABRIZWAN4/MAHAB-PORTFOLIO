@@ -12,8 +12,10 @@ import {
   Moon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import { getNavbar, type Navbar as NavbarType } from "@/lib/sanity";
 
-const navLinks = [
+// Default fallbacks
+const defaultNavLinks = [
   { name: "Home", href: "#home" },
   { name: "Expertise", href: "#expertise" },
   { name: "Projects", href: "#projects" },
@@ -26,8 +28,24 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navbarConfig, setNavbarConfig] = useState<NavbarType | null>(null);
 
   const { theme, setTheme } = useTheme();
+
+  // Fetch navbar config
+  useEffect(() => {
+    async function fetchNavbar() {
+      try {
+        const data = await getNavbar();
+        if (data) {
+          setNavbarConfig(data);
+        }
+      } catch (error) {
+        console.error("Error fetching navbar config:", error);
+      }
+    }
+    fetchNavbar();
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -42,6 +60,17 @@ export default function Navbar() {
   }, []);
 
   const isDark = mounted && theme === "dark";
+
+  // Use config data or fallbacks
+  const logo = navbarConfig?.logo || "MR";
+  const name = navbarConfig?.name || "Mahab Rizwan";
+  const tagline = navbarConfig?.tagline || "AI Full Stack Developer";
+  const navLinks = navbarConfig?.navLinks || defaultNavLinks;
+  const githubUrl = navbarConfig?.githubUrl || "https://github.com";
+  const linkedinUrl = navbarConfig?.linkedinUrl || "https://linkedin.com";
+  const ctaButtonText = navbarConfig?.ctaButtonText || "Hire Me";
+  const ctaButtonMobile = navbarConfig?.ctaButtonMobile || "Let's Work Together";
+  const mobileSubtitle = navbarConfig?.mobileSubtitle || "Portfolio Navigation";
 
   const navBackground = isDark
     ? scrolled
@@ -100,7 +129,7 @@ export default function Navbar() {
                       "0 0 25px rgba(99,102,241,0.45)",
                   }}
                 >
-                  MR
+                  {logo}
                 </div>
 
                 <div className="hidden sm:block">
@@ -110,7 +139,7 @@ export default function Navbar() {
                       color: textPrimary,
                     }}
                   >
-                    Mahab Rizwan
+                    {name}
                   </h2>
 
                   <p
@@ -119,7 +148,7 @@ export default function Navbar() {
                       color: textSecondary,
                     }}
                   >
-                    AI Full Stack Developer
+                    {tagline}
                   </p>
                 </div>
               </motion.div>
@@ -172,7 +201,7 @@ export default function Navbar() {
 
               {/* GITHUB */}
               <Link
-                href="https://github.com"
+                href={githubUrl}
                 target="_blank"
                 className="transition-all duration-300 hover:scale-110"
                 style={{
@@ -184,7 +213,7 @@ export default function Navbar() {
 
               {/* LINKEDIN */}
               <Link
-                href="https://linkedin.com"
+                href={linkedinUrl}
                 target="_blank"
                 className="transition-all duration-300 hover:scale-110"
                 style={{
@@ -204,7 +233,7 @@ export default function Navbar() {
                     "0 0 30px rgba(99,102,241,0.35)",
                 }}
               >
-                Hire Me
+                {ctaButtonText}
               </button>
             </div>
 
@@ -301,7 +330,7 @@ export default function Navbar() {
                         color: textPrimary,
                       }}
                     >
-                      Mahab Rizwan
+                      {name}
                     </h2>
 
                     <p
@@ -310,7 +339,7 @@ export default function Navbar() {
                         color: textSecondary,
                       }}
                     >
-                      Portfolio Navigation
+                      {mobileSubtitle}
                     </p>
                   </div>
 
@@ -376,7 +405,7 @@ export default function Navbar() {
                         "0 0 30px rgba(99,102,241,0.35)",
                     }}
                   >
-                    Let’s Work Together
+                    {ctaButtonMobile}
                   </button>
                 </div>
               </div>

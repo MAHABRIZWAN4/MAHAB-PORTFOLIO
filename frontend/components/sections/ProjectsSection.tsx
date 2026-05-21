@@ -140,7 +140,7 @@ function HackerCard({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="absolute inset-0 flex flex-col justify-center items-center gap-2 p-4 backdrop-blur-sm bg-white/80 dark:bg-[rgba(10,14,24,0.85)]"
+                className="absolute inset-0 flex flex-col justify-center items-center gap-2 p-4 backdrop-blur-md bg-white/90 dark:bg-[rgba(10,14,24,0.85)]"
               >
                 <p
                   className="text-[10px] uppercase tracking-widest mb-2 opacity-70"
@@ -155,7 +155,7 @@ function HackerCard({
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.05 }}
-                      className="px-2 py-0.5 rounded text-[11px] font-semibold"
+                      className="px-2 py-0.5 rounded text-[11px] font-semibold shadow-sm"
                       style={{
                         fontFamily: "monospace",
                         color: colors.accent,

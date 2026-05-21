@@ -87,6 +87,22 @@ export interface ProjectsConfig {
   }>;
 }
 
+export interface Navbar {
+  _id: string;
+  logo: string;
+  name: string;
+  tagline: string;
+  mobileSubtitle: string;
+  navLinks: Array<{
+    name: string;
+    href: string;
+  }>;
+  githubUrl: string;
+  linkedinUrl: string;
+  ctaButtonText: string;
+  ctaButtonMobile: string;
+}
+
 export async function getProjects(): Promise<Project[]> {
   const query = `*[_type == "project"] | order(order asc) {
     _id,
@@ -169,6 +185,23 @@ export async function getProjectsConfig(): Promise<ProjectsConfig | null> {
     sectionDescription,
     terminalPath,
     categories
+  }`;
+
+  return client.fetch(query);
+}
+
+export async function getNavbar(): Promise<Navbar | null> {
+  const query = `*[_type == "navbar"][0] {
+    _id,
+    logo,
+    name,
+    tagline,
+    mobileSubtitle,
+    navLinks,
+    githubUrl,
+    linkedinUrl,
+    ctaButtonText,
+    ctaButtonMobile
   }`;
 
   return client.fetch(query);
