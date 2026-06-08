@@ -32,11 +32,7 @@ export default function ContactSection() {
     "> awaiting_transmission"
   ];
 
-  const stars = Array.from({ length: 80 }, (_, i) => ({
-    id: i,
-    left: Math.random() * 100,
-    top: Math.random() * 100,
-  }));
+  const gridLines = Array.from({ length: 20 }, (_, i) => i);
 
   useEffect(() => { getContact().then(setContact); }, []);
 
@@ -71,96 +67,184 @@ export default function ContactSection() {
   if (!contact) return null;
 
   return (
-    <section id="contact" className="relative overflow-hidden py-24 px-4 bg-[#060816]">
+    <section id="contact" className="relative overflow-hidden py-24 px-4 bg-gray-50 dark:bg-[#060816]">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(500px circle at ${mouse.x}px ${mouse.y}px, rgba(99,102,241,.15), transparent 40%)`
+          background: `radial-gradient(500px circle at ${mouse.x}px ${mouse.y}px, rgba(99,102,241,${typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? '.15' : '.08'}), transparent 40%)`
         }}
       />
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {stars.map((s) => (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-20 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            linear-gradient(rgba(99,102,241,0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(99,102,241,0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px'
+        }} />
+        {gridLines.map((i) => (
           <motion.div
-            key={s.id}
-            className="absolute w-[2px] h-[2px] bg-white rounded-full"
-            style={{ left: `${s.left}%`, top: `${s.top}%` }}
-            animate={{ opacity: [0.2, 1, 0.2] }}
-            transition={{ duration: 3, repeat: Infinity }}
+            key={i}
+            className="absolute h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent"
+            style={{ top: `${(i * 5)}%`, width: '100%' }}
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 4, repeat: Infinity, delay: i * 0.1 }}
           />
         ))}
       </div>
 
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <h1 className="text-[120px] md:text-[220px] font-black text-white/[0.03]">
+        <h1 className="text-[120px] md:text-[220px] font-black text-gray-900/[0.02] dark:text-white/[0.03]">
           CONTACT
         </h1>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/20 bg-indigo-500/10">
-            <Radio size={14} className="text-indigo-400" />
-            <span className="text-indigo-300 text-xs uppercase tracking-[3px]">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 dark:bg-indigo-500/10 bg-indigo-500/20">
+            <Radio size={14} className="text-indigo-500 dark:text-indigo-400" />
+            <span className="text-indigo-600 dark:text-indigo-300 text-xs uppercase tracking-[3px]">
               AI Mission Console
             </span>
           </div>
 
-          <h2 className="mt-6 text-5xl md:text-7xl font-black text-white">
+          <h2 className="mt-6 text-5xl md:text-7xl font-black text-gray-900 dark:text-white">
             Let's Build The Future
           </h2>
 
-          <p className="mt-4 text-white/60 max-w-2xl mx-auto">
+          <p className="mt-4 text-gray-600 dark:text-white/60 max-w-2xl mx-auto">
             {contact.description}
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-10">
           <div className="space-y-6">
-            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
-              <div className="text-green-400 font-mono">
+            <div className="rounded-3xl border border-indigo-500/20 bg-white/90 dark:bg-black/40 dark:backdrop-blur-xl p-8">
+              <div className="flex items-center gap-2 mb-6">
+                <Terminal className="text-indigo-500 dark:text-indigo-400" size={20} />
+                <span className="text-indigo-600 dark:text-indigo-300 font-mono text-sm uppercase tracking-wider">System Console</span>
+              </div>
+
+              <div className="text-green-500 dark:text-green-400 font-mono text-lg mb-8 flex items-center gap-2">
+                <span className="animate-pulse">▸</span>
                 {terminalLines[typingIndex]}
               </div>
 
-              <div className="mt-6 space-y-3 text-sm">
-                <div className="text-white">Email: {contact.email}</div>
-                <div className="text-white">Location: {contact.location}</div>
-                <div className="text-white">Response: {contact.responseTime}</div>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-indigo-500/20">
+                  <Mail className="text-indigo-500 dark:text-indigo-400 mt-1" size={18} />
+                  <div>
+                    <div className="text-gray-500 dark:text-white/60 text-xs uppercase tracking-wide mb-1">Email</div>
+                    <div className="text-gray-900 dark:text-white font-medium">{contact.email}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-indigo-500/20">
+                  <MapPin className="text-indigo-500 dark:text-indigo-400 mt-1" size={18} />
+                  <div>
+                    <div className="text-gray-500 dark:text-white/60 text-xs uppercase tracking-wide mb-1">Location</div>
+                    <div className="text-gray-900 dark:text-white font-medium">{contact.location}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 p-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-indigo-500/20">
+                  <Clock className="text-indigo-500 dark:text-indigo-400 mt-1" size={18} />
+                  <div>
+                    <div className="text-gray-500 dark:text-white/60 text-xs uppercase tracking-wide mb-1">Response Time</div>
+                    <div className="text-gray-900 dark:text-white font-medium">{contact.responseTime}</div>
+                  </div>
+                </div>
               </div>
 
               {formData.name && (
-                <div className="mt-4 text-cyan-400 font-mono text-xs">
-                  AI IDENTIFIED VISITOR: {formData.name.toUpperCase()}
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30"
+                >
+                  <div className="text-cyan-500 dark:text-cyan-400 font-mono text-xs flex items-center gap-2">
+                    <Activity size={14} className="animate-pulse" />
+                    AI IDENTIFIED VISITOR: {formData.name.toUpperCase()}
+                  </div>
+                </motion.div>
               )}
             </div>
 
             <div className="grid grid-cols-3 gap-4">
-              {[Activity, Cpu, Terminal].map((Icon, i) => (
-                <div key={i} className="rounded-2xl border border-white/10 p-4 bg-white/[0.03]">
-                  <Icon className="text-indigo-400 mb-2" />
-                  <div className="text-white text-sm">ONLINE</div>
-                </div>
+              {[
+                { Icon: Activity, label: "GitHub Active" },
+                { Icon: Cpu, label: "LinkedIn Active" },
+                { Icon: Terminal, label: "Email Active" }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  className="rounded-2xl border border-indigo-500/30 p-4 bg-white/90 dark:bg-black/40 backdrop-blur-sm"
+                  whileHover={{ scale: 1.05, borderColor: "rgba(99,102,241,0.6)" }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <item.Icon className="text-indigo-500 dark:text-indigo-400 mb-2" size={20} />
+                  <div className="text-gray-900 dark:text-white text-xs font-semibold">{item.label}</div>
+                  <div className="flex items-center gap-1 mt-1">
+                    <div className="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 animate-pulse" />
+                    <span className="text-green-600 dark:text-green-400 text-[10px]">ONLINE</span>
+                  </div>
+                </motion.div>
               ))}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <a href={contact.githubUrl} className="rounded-2xl border border-white/10 p-4 text-white flex justify-center gap-2">
+              <motion.a
+                href={contact.githubUrl}
+                className="rounded-2xl border border-indigo-500/30 p-4 text-gray-900 dark:text-white flex justify-center items-center gap-2 bg-white/90 dark:bg-black/40 backdrop-blur-sm transition-all"
+                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(99,102,241,0.4)" }}
+                transition={{ duration: 0.2 }}
+              >
                 <Github size={18}/> GitHub
-              </a>
-              <a href={contact.linkedinUrl} className="rounded-2xl border border-white/10 p-4 text-white flex justify-center gap-2">
+              </motion.a>
+              <motion.a
+                href={contact.linkedinUrl}
+                className="rounded-2xl border border-indigo-500/30 p-4 text-gray-900 dark:text-white flex justify-center items-center gap-2 bg-white/90 dark:bg-black/40 backdrop-blur-sm transition-all"
+                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(99,102,241,0.4)" }}
+                transition={{ duration: 0.2 }}
+              >
                 <Linkedin size={18}/> LinkedIn
-              </a>
+              </motion.a>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-2xl">
+          <div className="rounded-3xl border border-indigo-500/20 bg-white/90 dark:bg-white/[0.03] p-8 backdrop-blur-2xl">
             {!isSuccess ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <input name="name" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full p-3 rounded-xl bg-white/5 text-white"/>
-                <input name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full p-3 rounded-xl bg-white/5 text-white"/>
-                <input name="subject" value={formData.subject} onChange={handleChange} placeholder="Subject" className="w-full p-3 rounded-xl bg-white/5 text-white"/>
-                <textarea name="message" value={formData.message} onChange={handleChange} placeholder="Message" rows={6} className="w-full p-3 rounded-xl bg-white/5 text-white"/>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Name"
+                  className="w-full p-4 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-900 dark:text-white border border-indigo-500/30 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-white/40"
+                />
+                <input
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Email"
+                  className="w-full p-4 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-900 dark:text-white border border-indigo-500/30 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-white/40"
+                />
+                <input
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  placeholder="Subject"
+                  className="w-full p-4 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-900 dark:text-white border border-indigo-500/30 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-white/40"
+                />
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Message"
+                  rows={6}
+                  className="w-full p-4 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-900 dark:text-white border border-indigo-500/30 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-white/40 resize-none"
+                />
 
                 <motion.button
                   type="submit"
@@ -181,11 +265,11 @@ export default function ContactSection() {
               </form>
             ) : (
               <div className="text-center py-20">
-                <CheckCircle2 size={72} className="mx-auto text-green-400 mb-4"/>
-                <h3 className="text-3xl text-white font-black">
+                <CheckCircle2 size={72} className="mx-auto text-green-500 dark:text-green-400 mb-4"/>
+                <h3 className="text-3xl text-gray-900 dark:text-white font-black">
                   TRANSMISSION ACCEPTED
                 </h3>
-                <p className="text-white/60 mt-4">
+                <p className="text-gray-600 dark:text-white/60 mt-4">
                   AI RESPONSE SYSTEM ONLINE • ETA {contact.responseTime}
                 </p>
               </div>
