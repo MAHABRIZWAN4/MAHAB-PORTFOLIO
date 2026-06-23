@@ -3,6 +3,7 @@ import { Space_Grotesk, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import LoadingScreen from "@/components/layout/LoadingScreen";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 
@@ -82,6 +83,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${dmSans.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <LoadingScreen />
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />

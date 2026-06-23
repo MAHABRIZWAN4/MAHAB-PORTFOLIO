@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { getNavbar, type Navbar as NavbarType } from "@/lib/sanity";
+import { getSiteSettings, type SiteSettings } from "@/lib/siteSettings";
 
 // Default fallbacks
 const defaultNavLinks = [
@@ -29,6 +30,7 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [navbarConfig, setNavbarConfig] = useState<NavbarType | null>(null);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
 
   const { theme, setTheme } = useTheme();
 
@@ -45,6 +47,21 @@ export default function Navbar() {
       }
     }
     fetchNavbar();
+  }, []);
+
+  // Fetch site settings for logo
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const data = await getSiteSettings();
+        if (data) {
+          setSiteSettings(data);
+        }
+      } catch (error) {
+        console.error("Error fetching site settings:", error);
+      }
+    }
+    fetchSettings();
   }, []);
 
   useEffect(() => {
@@ -113,24 +130,36 @@ export default function Navbar() {
               : "0 8px 30px rgba(0,0,0,0.08)",
           }}
         >
-          <div className="flex items-center justify-between h-[72px] px-5 lg:px-8">
+          <div className="flex items-center justify-between h-[50px] px-5 lg:px-8">
             {/* LOGO */}
             <Link href="#home">
               <motion.div
                 whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
                 className="flex items-center gap-3 cursor-pointer"
               >
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)",
-                    boxShadow:
-                      "0 0 25px rgba(99,102,241,0.45)",
-                  }}
-                >
-                  {logo}
-                </div>
+                {siteSettings?.logoUrl ? (
+                  <img
+                    src={siteSettings.logoUrl}
+                    alt="Logo"
+                    className="h-20 w-auto object-contain transition-transform duration-200"
+                    style={{
+                      filter: "drop-shadow(0 0 12px rgba(99,102,241,0.3))",
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)",
+                      boxShadow:
+                        "0 0 25px rgba(99,102,241,0.45)",
+                    }}
+                  >
+                    {logo}
+                  </div>
+                )}
 
                 <div className="hidden sm:block">
                   <h2

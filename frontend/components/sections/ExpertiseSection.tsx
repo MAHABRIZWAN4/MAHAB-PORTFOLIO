@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
 import { getExpertise, type Expertise } from "@/lib/expertise"
+import ScrollToNextButton from "../ui/ScrollToNextButton"
 
 const accentColors = {
   indigo: "#6366f1",
@@ -301,6 +302,9 @@ export default function ExpertiseSection() {
           })}
         </div>
       </div>
+
+      {/* Scroll to Next Section Button */}
+      <ScrollToNextButton nextSectionId="work" />
     </section>
   )
 }

@@ -7,6 +7,7 @@ import { Github, Linkedin, Download, Mic } from "lucide-react";
 import AnimatedName from "./AnimatedName";
 import MRMonogram from "./MRMonogram";
 import StatsBar from "./StatsBar";
+import ScrollToNextButton from "../ui/ScrollToNextButton";
 import { getHero, type Hero } from "@/lib/sanity";
 import { useTheme } from "next-themes";
 
@@ -382,6 +383,9 @@ export default function HeroSection() {
         {/* Stats Bar */}
         <StatsBar stats={heroData.stats} />
       </div>
+
+      {/* Scroll to Next Section Button */}
+      <ScrollToNextButton nextSectionId="expertise" />
     </section>
   );
 }

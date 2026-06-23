@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { getProjects, getProjectsConfig, type Project, type ProjectsConfig, urlFor } from "@/lib/sanity";
+import ScrollToNextButton from "../ui/ScrollToNextButton";
 
 // Default fallbacks
 const defaultCategories = ["All", "AI", "Full Stack", "Backend", "Web3"];
@@ -482,6 +483,9 @@ export default function ProjectsSection() {
           </motion.div>
         )}
       </div>
+
+      {/* Scroll to Next Section Button */}
+      <ScrollToNextButton nextSectionId="contact" />
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');

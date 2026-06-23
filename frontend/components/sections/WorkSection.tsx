@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
 import { getWork, type Work } from "@/lib/work"
+import ScrollToNextButton from "../ui/ScrollToNextButton"
 
 export default function WorkSection() {
   const [work, setWork] = useState<Work | null>(null)
@@ -211,6 +212,9 @@ export default function WorkSection() {
 
         </div>
       </div>
+
+      {/* Scroll to Next Section Button */}
+      <ScrollToNextButton nextSectionId="skills" />
 
       <style jsx>{`
         @keyframes float {

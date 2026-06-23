@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { getSkills, type Skill } from "@/lib/skills";
+import ScrollToNextButton from "../ui/ScrollToNextButton";
 
 // Floating code particles data
 const codeSymbols = [
@@ -427,6 +428,9 @@ export default function SkillsSection() {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Scroll to Next Section Button */}
+      <ScrollToNextButton nextSectionId="projects" />
     </section>
   );
 }
