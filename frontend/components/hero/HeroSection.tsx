@@ -7,7 +7,6 @@ import { Github, Linkedin, Download, Mic } from "lucide-react";
 import AnimatedName from "./AnimatedName";
 import MRMonogram from "./MRMonogram";
 import StatsBar from "./StatsBar";
-import ScrollToNextButton from "../ui/ScrollToNextButton";
 import { getHero, type Hero } from "@/lib/sanity";
 import { useTheme } from "next-themes";
 
@@ -302,90 +301,9 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Scroll Indicator - Above Stats Bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex justify-center mt-8 mb-8 relative z-10"
-        >
-          <button
-            onClick={() => {
-              window.scrollTo({
-                top: window.innerHeight,
-                behavior: "smooth",
-              });
-            }}
-            className=" flex flex-col items-center space-y-2 cursor-pointer group transition-all duration-300 hover:scale-110"
-            aria-label="Scroll down"
-          >
-            <svg
-              width="26"
-              height="42"
-              viewBox="0 0 26 42"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="relative"
-            >
-              {/* Animated outline with theme color */}
-              <rect
-                x="1"
-                y="1"
-                width="24"
-                height="40"
-                rx="12"
-                stroke="#00d4ff"
-                strokeWidth="2"
-                strokeDasharray="200"
-                strokeDashoffset="200"
-                style={{
-                  animation: "scroll-outline 2s linear infinite",
-                }}
-              />
-              {/* Static border */}
-              <rect
-                x="1"
-                y="1"
-                width="24"
-                height="40"
-                rx="12"
-                stroke={isDark ? "rgba(0, 212, 255, 0.2)" : "rgba(0, 212, 255, 0.3)"}
-                strokeWidth="1"
-              />
-              {/* Animated Down Arrow */}
-              <g
-                style={{
-                  animation: "scroll-bounce 2s ease-in-out infinite",
-                }}
-              >
-                <path
-                  d="M13 12 L13 18 M13 18 L10 15 M13 18 L16 15"
-                  stroke="#00d4ff"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-              </g>
-            </svg>
-            <span
-              className=" font-mono uppercase tracking-[2px] transition-colors duration-300"
-              style={{
-                fontSize: "9px",
-                color: isDark ? "rgba(0, 212, 255, 0.5)" : "rgba(0, 212, 255, 0.6)",
-              }}
-            >
-              SCROLL
-            </span>
-          </button>
-        </motion.div>
-
         {/* Stats Bar */}
         <StatsBar stats={heroData.stats} />
       </div>
-
-      {/* Scroll to Next Section Button */}
-      <ScrollToNextButton nextSectionId="expertise" />
     </section>
   );
 }
