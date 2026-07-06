@@ -22,6 +22,7 @@ const defaultNavLinks = [
   { name: "Projects", href: "#projects" },
   { name: "Skills", href: "#skills" },
   { name: "Experience", href: "#experience" },
+  { name: "AI Agent", href: "/ai-agent" },
   { name: "Contact", href: "#contact" },
 ];
 
