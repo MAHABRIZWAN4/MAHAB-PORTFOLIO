@@ -23,9 +23,9 @@ const LANGUAGES = [
 
 const SUGGESTED_QUESTIONS = [
   "What are Mahab's skills?",
-  "Tell me about his experience",
-  "What projects has he built?",
-  "How can I hire him?",
+  "Tell me about her experience",
+  "What projects has she built?",
+  "Can I download her CV?",
   "مہاب کی skills کیا ہیں؟",
   "مجھے اس کے projects بتاؤ",
 ];
@@ -34,7 +34,7 @@ export default function AIAgentPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      text: "Hi! I'm Mahab's AI assistant. I can tell you everything about Mahab Rizwan — his skills, experience, projects, and how to contact him. What would you like to know?",
+      text: "Hi! I'm Mahab's AI assistant. I can tell you everything about Mahab Rizwan — her skills, experience, projects, and how to contact her. What would you like to know?",
       isUser: false,
     },
   ]);
@@ -59,17 +59,41 @@ export default function AIAgentPage() {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = "en-US"; // Default language
+      recognitionRef.current.maxAlternatives = 1;
 
       recognitionRef.current.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         setInput(transcript);
         setIsListening(false);
-        // Auto-submit after voice input
-        handleSendMessage(transcript);
+        // Auto-submit after 300ms
+        setTimeout(() => {
+          handleSendMessage(transcript);
+        }, 300);
       };
 
-      recognitionRef.current.onerror = () => {
+      recognitionRef.current.onerror = (event: any) => {
         setIsListening(false);
+        console.error("Speech recognition error:", event.error);
+
+        let errorText = "Could not hear clearly, please try again";
+
+        if (event.error === "no-speech") {
+          errorText = "No speech detected. Please speak into your microphone.";
+        } else if (event.error === "audio-capture") {
+          errorText = "Microphone not found. Please check your microphone settings.";
+        } else if (event.error === "not-allowed") {
+          errorText = "Microphone access denied. Please allow microphone permissions.";
+        } else if (event.error === "network") {
+          errorText = "Network error. Please check your internet connection.";
+        }
+
+        const errorMessage: Message = {
+          id: Date.now().toString(),
+          text: errorText,
+          isUser: false,
+        };
+        setMessages((prev) => [...prev, errorMessage]);
       };
 
       recognitionRef.current.onend = () => {
@@ -80,7 +104,7 @@ export default function AIAgentPage() {
 
   const handleVoiceInput = () => {
     if (!recognitionRef.current) {
-      alert("Voice input not supported in this browser");
+      alert("Voice input is not supported in this browser. Please use Chrome.");
       return;
     }
 
@@ -138,19 +162,19 @@ export default function AIAgentPage() {
   return (
     <div
       id="ai-agent"
-      className="min-h-screen pt-24 pb-8 px-4"
+      className="flex flex-col min-h-screen pt-24 pb-8 px-4"
       style={{
         background: "linear-gradient(160deg, #0a0e18, #0c1220, #101828)",
       }}
     >
-      <div className="container mx-auto max-w-7xl h-[calc(100vh-10rem)]">
-        <div className="grid lg:grid-cols-[30%_70%] gap-6 h-full">
+      <div className="container mx-auto max-w-7xl flex-1 flex overflow-hidden">
+        <div className="grid lg:grid-cols-[30%_70%] gap-6 w-full">
           {/* LEFT INFO PANEL */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-[#1e2433] rounded-2xl p-6 flex flex-col gap-6 lg:h-full h-auto border border-white/5"
+            className="bg-[#1e2433] rounded-2xl p-6 flex flex-col gap-6 overflow-y-auto border border-white/5"
           >
             {/* Avatar */}
             <div className="flex flex-col items-center gap-4">
@@ -174,7 +198,7 @@ export default function AIAgentPage() {
 
             {/* Description */}
             <p className="text-sm text-gray-300 leading-relaxed text-center">
-              Ask me anything about Mahab — his skills, experience, projects, or how to hire him. I speak 50+ languages including Urdu, Sindhi and English.
+              Ask me anything about Mahab — her skills, experience, projects, or how to hire her. I speak 50+ languages including Urdu, Sindhi and English.
             </p>
 
             {/* Language badges */}
@@ -221,7 +245,7 @@ export default function AIAgentPage() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-[#1e2433] rounded-2xl flex flex-col h-full border border-white/5"
+            className="bg-[#1e2433] rounded-2xl flex flex-col h-full overflow-hidden border border-white/5"
           >
             {/* Chat header */}
             <div className="px-6 py-4 border-b border-white/5">
@@ -245,7 +269,7 @@ export default function AIAgentPage() {
             </div>
 
             {/* Messages area */}
-            <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+            <div className="flex-1 overflow-y-auto px-6 py-4 pb-4 space-y-4">
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
@@ -281,7 +305,25 @@ export default function AIAgentPage() {
                             }
                       }
                     >
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                        {message.text.split(/(\[Download CV\]\(\/CV_MAHAB_RIZWAN\.pdf\))/).map((part, idx) => {
+                          if (part === "[Download CV](/CV_MAHAB_RIZWAN.pdf)") {
+                            return (
+                              <a
+                                key={idx}
+                                href="/CV_MAHAB_RIZWAN.pdf"
+                                download="CV_MAHAB_RIZWAN.pdf"
+                                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium transition-colors"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                📄 Download CV
+                              </a>
+                            );
+                          }
+                          return part;
+                        })}
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -322,7 +364,7 @@ export default function AIAgentPage() {
             </div>
 
             {/* Input area */}
-            <div className="px-6 py-4 border-t border-white/5">
+            <div className="flex-shrink-0 px-6 py-4 border-t border-white/5">
               <div className="flex items-center gap-3">
                 <input
                   type="text"
@@ -341,8 +383,8 @@ export default function AIAgentPage() {
                   onClick={handleVoiceInput}
                   className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
                     isListening
-                      ? "bg-red-500 text-white"
-                      : "bg-white/5 text-gray-400 hover:bg-white/10"
+                      ? "bg-red-500 text-white animate-pulse border-2 border-red-400"
+                      : "bg-white/5 text-gray-400 hover:bg-white/10 border border-white/15"
                   }`}
                   title={
                     !recognitionRef.current
