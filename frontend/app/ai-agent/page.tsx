@@ -26,7 +26,7 @@ const SUGGESTED_QUESTIONS = [
   "Tell me about his experience",
   "What projects has he built?",
   "How can I hire him?",
-  "ماحب کی skills کیا ہیں؟",
+  "مہاب کی skills کیا ہیں؟",
   "مجھے اس کے projects بتاؤ",
 ];
 

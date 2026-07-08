@@ -4,7 +4,7 @@ export interface AgentResponse {
 }
 
 export async function sendMessage(message: string): Promise<AgentResponse> {
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8001';
 
   try {
     const response = await fetch(`${backendUrl}/agent/chat`, {

@@ -104,7 +104,7 @@ def test_agent_missing_body_rejected(client):
 def test_agent_urdu_question_accepted(client, mock_openrouter):
     """Test agent accepts Urdu language questions."""
     # Arrange
-    payload = {"message": "ماحب کی skills کیا ہیں؟"}
+    payload = {"message": "مہاب کی skills کیا ہیں؟"}
 
     # Act
     response = client.post("/agent/chat", json=payload)
