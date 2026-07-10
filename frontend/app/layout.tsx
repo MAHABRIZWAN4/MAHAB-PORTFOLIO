@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -89,6 +90,7 @@ export default function RootLayout({
           <Footer />
           <Toaster position="bottom-right" />
         </ThemeProvider>
+        <WhatsAppButton />
       </body>
     </html>
   );
