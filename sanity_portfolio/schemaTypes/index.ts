@@ -8,5 +8,6 @@ import navbar from './navbar'
 import skill from './skill'
 import contact from './contact'
 import siteSettings from './siteSettings'
+import blog from './blog'
 
-export const schemaTypes = [project, hero, footer, expertise, work, projectsConfig, navbar, skill, contact, siteSettings]
+export const schemaTypes = [project, hero, footer, expertise, work, projectsConfig, navbar, skill, contact, siteSettings, blog]
