@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
@@ -17,13 +18,14 @@ import { getSiteSettings, type SiteSettings } from "@/lib/siteSettings";
 
 // Default fallbacks
 const defaultNavLinks = [
-  { name: "Home", href: "#home" },
-  { name: "Expertise", href: "#expertise" },
-  { name: "Projects", href: "#projects" },
-  { name: "Skills", href: "#skills" },
-  { name: "Experience", href: "#experience" },
+  { name: "Home", href: "/#home" },
+  { name: "Expertise", href: "/#expertise" },
+  { name: "Projects", href: "/#projects" },
+  { name: "Skills", href: "/#skills" },
+  { name: "Experience", href: "/#experience" },
+  { name: "Blog", href: "/blog" },
   { name: "AI Agent", href: "/ai-agent" },
-  { name: "Contact", href: "#contact" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export default function Navbar() {
@@ -34,6 +36,19 @@ export default function Navbar() {
   const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
 
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Handle navigation for hash links
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // If it's a hash link and we're not on the home page
+    if (href.startsWith("/#") && pathname !== "/") {
+      e.preventDefault();
+      // Use absolute URL to ensure proper navigation from any page
+      window.location.href = window.location.origin + href;
+    }
+    // For regular links or if already on home page, let Next.js Link handle it normally
+  };
 
   // Fetch navbar config
   useEffect(() => {
@@ -133,7 +148,7 @@ export default function Navbar() {
         >
           <div className="flex items-center justify-between h-[50px] px-5 lg:px-8">
             {/* LOGO */}
-            <Link href="#home">
+            <Link href="/#home" onClick={(e) => handleNavClick(e, "/#home")}>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
@@ -190,6 +205,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className="relative group text-sm font-medium transition-all duration-300"
                   style={{
                     color: textSecondary,
@@ -398,7 +414,10 @@ export default function Navbar() {
                     >
                       <Link
                         href={link.href}
-                        onClick={() => setIsOpen(false)}
+                        onClick={(e) => {
+                          handleNavClick(e, link.href);
+                          setIsOpen(false);
+                        }}
                         className="flex items-center justify-between px-5 py-4 rounded-2xl transition-all duration-300"
                         style={{
                           background: isDark

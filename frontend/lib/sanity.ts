@@ -103,6 +103,32 @@ export interface Navbar {
   ctaButtonMobile: string;
 }
 
+export interface Blog {
+  _id: string;
+  title: string;
+  slug: {
+    current: string;
+  };
+  excerpt: string;
+  coverImage?: {
+    asset: {
+      _ref: string;
+      _type: string;
+    };
+    alt?: string;
+  };
+  category: string;
+  body: any[]; // Portable Text blocks
+  publishedAt: string;
+  featured: boolean;
+  readingTime?: number;
+  tags?: string[];
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+  };
+}
+
 export async function getProjects(): Promise<Project[]> {
   const query = `*[_type == "project"] | order(order asc) {
     _id,
@@ -205,4 +231,73 @@ export async function getNavbar(): Promise<Navbar | null> {
   }`;
 
   return client.fetch(query);
+}
+
+export async function getBlogs(): Promise<Blog[]> {
+  const query = `*[_type == "blog"] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    coverImage,
+    category,
+    publishedAt,
+    featured,
+    readingTime,
+    tags
+  }`;
+
+  return client.fetch(query);
+}
+
+export async function getFeaturedBlogs(): Promise<Blog[]> {
+  const query = `*[_type == "blog" && featured == true] | order(publishedAt desc) [0...3] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    coverImage,
+    category,
+    publishedAt,
+    featured,
+    readingTime,
+    tags
+  }`;
+
+  return client.fetch(query);
+}
+
+export async function getBlogBySlug(slug: string): Promise<Blog | null> {
+  const query = `*[_type == "blog" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    coverImage,
+    category,
+    body,
+    publishedAt,
+    featured,
+    readingTime,
+    tags,
+    seo
+  }`;
+
+  return client.fetch(query, { slug });
+}
+
+export async function getBlogsByCategory(category: string): Promise<Blog[]> {
+  const query = `*[_type == "blog" && category == $category] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    coverImage,
+    category,
+    publishedAt,
+    readingTime,
+    tags
+  }`;
+
+  return client.fetch(query, { category });
 }
