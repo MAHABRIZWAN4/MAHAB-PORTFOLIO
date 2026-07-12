@@ -66,7 +66,7 @@ export default function BlogCard({ blog, index }: BlogCardProps) {
       transition={{ delay: index * 0.1, duration: 0.5 }}
     >
       <Link href={`/blog/${blog.slug.current}`}>
-        <div className="group relative h-full rounded-2xl overflow-hidden border border-gray-200 dark:border-white/5 bg-white dark:bg-gradient-to-br dark:from-white/[0.03] dark:to-transparent backdrop-blur-sm transition-all duration-500 hover:border-violet-300 dark:hover:border-white/10 hover:scale-[1.02] hover:shadow-xl">
+        <div className="group relative h-full rounded-2xl overflow-hidden border border-gray-200 dark:border-white/[0.08] bg-white dark:bg-[#111827] backdrop-blur-sm transition-all duration-500 hover:border-violet-300 dark:hover:border-white/10 hover:scale-[1.02] hover:shadow-xl">
           {/* Glow Effect */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl"

@@ -41,7 +41,7 @@ const components = {
     em: ({ children }: any) => <em className="italic">{children}</em>,
     underline: ({ children }: any) => <u className="underline">{children}</u>,
     code: ({ children }: any) => (
-      <code className="px-2 py-1 rounded-md font-mono text-sm bg-violet-100 dark:bg-violet-500/20 text-violet-700 dark:text-violet-300">
+      <code className="px-2 py-1 rounded-md font-mono text-sm bg-indigo-500/10 text-indigo-700 dark:bg-violet-500/20 dark:text-violet-300">
         {children}
       </code>
     ),
