@@ -93,7 +93,7 @@ GUARDRAILS — STRICT RULES:
 
 
 @router.post("/chat", response_model=ChatResponse)
-@limiter.limit("20/minute")
+@limiter.limit("20/minute;30/day")
 async def chat_with_agent(request: Request, chat_request: ChatRequest):
     """
     Chat with Mahab Rizwan's AI portfolio assistant.

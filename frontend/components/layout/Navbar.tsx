@@ -15,6 +15,7 @@ import {
 import { useTheme } from "next-themes";
 import { getNavbar, type Navbar as NavbarType } from "@/lib/sanity";
 import { getSiteSettings, type SiteSettings } from "@/lib/siteSettings";
+import { useHireModalStore } from "@/lib/hire-modal-store";
 
 // Default fallbacks
 const defaultNavLinks = [
@@ -36,6 +37,7 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
+  const { open: openHireModal } = useHireModalStore();
 
   // Handle navigation for hash links
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -269,6 +271,7 @@ export default function Navbar() {
 
               {/* BUTTON */}
               <button
+                onClick={openHireModal}
                 className="px-5 py-2 rounded-xl text-sm font-medium text-white transition-all duration-300 hover:scale-105"
                 style={{
                   background:
@@ -443,6 +446,10 @@ export default function Navbar() {
                 {/* BOTTOM BUTTON */}
                 <div className="mt-auto pt-10">
                   <button
+                    onClick={() => {
+                      setIsOpen(false);
+                      openHireModal();
+                    }}
                     className="w-full py-4 rounded-2xl text-white font-medium transition-all duration-300 hover:scale-[1.02]"
                     style={{
                       background:

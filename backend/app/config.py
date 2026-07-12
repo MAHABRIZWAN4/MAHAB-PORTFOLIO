@@ -18,6 +18,11 @@ class Settings(BaseSettings):
     SUPABASE_URL: str
     SUPABASE_KEY: str
 
+    # Gmail SMTP Configuration for Contact Form Notifications
+    GMAIL_USER: str = ""
+    GMAIL_APP_PASSWORD: str = ""
+    NOTIFICATION_EMAIL: str = "mahabrizwan@gmail.com"
+
     # CORS Configuration
     ALLOWED_ORIGINS: str = "http://localhost:3000"
 

@@ -14,6 +14,7 @@ export default function ContactSection() {
   const [contact, setContact] = useState<Contact | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [typingIndex, setTypingIndex] = useState(0);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [btnPos, setBtnPos] = useState({ x: 0, y: 0 });
@@ -58,10 +59,72 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+    setError(null);
+
+    // Validate field lengths to match backend requirements
+    if (formData.name.trim().length < 2) {
+      setIsSubmitting(false);
+      setError('Name must be at least 2 characters');
+      return;
+    }
+
+    if (formData.email.trim().length === 0) {
+      setIsSubmitting(false);
+      setError('Email is required');
+      return;
+    }
+
+    if (formData.subject.trim().length < 5) {
+      setIsSubmitting(false);
+      setError('Subject must be at least 5 characters');
+      return;
+    }
+
+    if (formData.message.trim().length < 20) {
+      setIsSubmitting(false);
+      setError('Message must be at least 20 characters');
+      return;
+    }
+
+    try {
+      // Prepare payload with exact field names matching backend Pydantic model
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+      };
+
+      // Debug: log what we're sending
+      console.log('Sending:', payload);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/contact/send`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Response error:', response.status, errorData);
+        const errorMessage = errorData?.detail || `Server error (${response.status})`;
+        throw new Error(errorMessage);
+      }
+
+      // Success - show success state
       setIsSubmitting(false);
       setIsSuccess(true);
-    }, 1500);
+
+      // Reset form
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error) {
+      // Error - show error message
+      setIsSubmitting(false);
+      setError('Failed to send. Please try again or contact directly at mahabrizwan@gmail.com');
+    }
   };
 
   if (!contact) return null;
@@ -248,6 +311,7 @@ export default function ContactSection() {
 
                 <motion.button
                   type="submit"
+                  disabled={isSubmitting}
                   animate={{ x: btnPos.x, y: btnPos.y }}
                   onMouseMove={(e) => {
                     const r = e.currentTarget.getBoundingClientRect();
@@ -257,11 +321,23 @@ export default function ContactSection() {
                     });
                   }}
                   onMouseLeave={() => setBtnPos({ x: 0, y: 0 })}
-                  className="w-full py-4 rounded-xl text-white font-bold"
+                  className="w-full py-4 rounded-xl text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ background: "linear-gradient(135deg,#6366f1,#06b6d4)" }}
                 >
                   {isSubmitting ? "TRANSMITTING..." : "TRANSMIT MESSAGE ↗"}
                 </motion.button>
+
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30"
+                  >
+                    <p className="text-sm text-red-700 dark:text-red-300 text-center">
+                      {error}
+                    </p>
+                  </motion.div>
+                )}
               </form>
             ) : (
               <div className="text-center py-20">

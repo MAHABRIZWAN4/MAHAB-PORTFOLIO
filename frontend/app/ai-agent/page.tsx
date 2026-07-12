@@ -43,8 +43,12 @@ export default function AIAgentPage() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
+  const [isLimitReached, setIsLimitReached] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+
+  const MESSAGE_LIMIT = 10;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,6 +57,18 @@ export default function AIAgentPage() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
+
+  // Load message count from sessionStorage on mount
+  useEffect(() => {
+    const storedCount = sessionStorage.getItem("mr_agent_count");
+    if (storedCount) {
+      const count = parseInt(storedCount, 10);
+      setMessageCount(count);
+      if (count >= MESSAGE_LIMIT) {
+        setIsLimitReached(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     // Initialize Web Speech API
@@ -122,6 +138,12 @@ export default function AIAgentPage() {
     const text = messageText || input.trim();
     if (!text) return;
 
+    // Check if limit is reached
+    if (messageCount >= MESSAGE_LIMIT) {
+      setIsLimitReached(true);
+      return;
+    }
+
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -131,6 +153,16 @@ export default function AIAgentPage() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
+
+    // Increment message count
+    const newCount = messageCount + 1;
+    setMessageCount(newCount);
+    sessionStorage.setItem("mr_agent_count", newCount.toString());
+
+    // Check if limit reached after this message
+    if (newCount >= MESSAGE_LIMIT) {
+      setIsLimitReached(true);
+    }
 
     // Get agent response
     try {
@@ -346,6 +378,28 @@ export default function AIAgentPage() {
 
             {/* Input area */}
             <div className="flex-shrink-0 px-6 py-4 border-t border-gray-200 dark:border-white/5">
+              {/* Limit reached message */}
+              {isLimitReached && (
+                <div className="mb-3 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30">
+                  <p className="text-sm text-red-700 dark:text-red-300 text-center">
+                    You've reached the session limit. Contact Mahab directly at{" "}
+                    <a
+                      href="mailto:mahabrizwan@gmail.com"
+                      className="font-medium underline hover:text-red-800 dark:hover:text-red-200"
+                    >
+                      mahabrizwan@gmail.com
+                    </a>
+                  </p>
+                </div>
+              )}
+
+              {/* Message counter */}
+              <div className="mb-2 flex justify-end">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {messageCount}/{MESSAGE_LIMIT} messages used
+                </span>
+              </div>
+
               <div className="flex items-center gap-3">
                 <input
                   type="text"
@@ -358,15 +412,17 @@ export default function AIAgentPage() {
                     }
                   }}
                   placeholder="Ask me about Mahab..."
-                  className="flex-1 px-5 py-3 rounded-full bg-gray-100 dark:bg-[#0a0e18] text-gray-900 dark:text-white text-sm outline-none border border-gray-300 dark:border-white/10 focus:border-indigo-500 transition-colors placeholder:text-gray-500"
+                  disabled={isLimitReached}
+                  className="flex-1 px-5 py-3 rounded-full bg-gray-100 dark:bg-[#0a0e18] text-gray-900 dark:text-white text-sm outline-none border border-gray-300 dark:border-white/10 focus:border-indigo-500 transition-colors placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 />
                 <button
                   onClick={handleVoiceInput}
+                  disabled={isLimitReached}
                   className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
                     isListening
                       ? "bg-red-500 text-white animate-pulse border-2 border-red-400"
                       : "bg-gray-200 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-white/10 border border-gray-300 dark:border-white/15"
-                  }`}
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
                   title={
                     !recognitionRef.current
                       ? "Voice not supported in this browser"
@@ -379,7 +435,7 @@ export default function AIAgentPage() {
                 </button>
                 <button
                   onClick={() => handleSendMessage()}
-                  disabled={!input.trim()}
+                  disabled={!input.trim() || isLimitReached}
                   className="w-12 h-12 rounded-full flex items-center justify-center bg-indigo-600 text-white hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send size={20} />

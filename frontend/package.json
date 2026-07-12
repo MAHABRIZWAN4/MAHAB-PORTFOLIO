@@ -11,6 +11,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.10",
     "@sanity/client": "^6.29.1",
     "@sanity/image-url": "^2.1.1",
     "@types/react-syntax-highlighter": "^15.5.13",
@@ -26,7 +27,8 @@
     "react-dom": "^19.0.0",
     "react-syntax-highlighter": "^16.1.1",
     "sonner": "^1.7.1",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^2.6.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",

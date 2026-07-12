@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import LoadingScreen from "@/components/layout/LoadingScreen";
+import HireMeModal from "@/components/ui/HireMeModal";
+import Analytics from "@/app/analytics";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
@@ -89,6 +91,8 @@ export default function RootLayout({
           <main className="min-h-screen">{children}</main>
           <Footer />
           <Toaster position="bottom-right" />
+          <HireMeModal />
+          <Analytics />
         </ThemeProvider>
         <WhatsAppButton />
       </body>
