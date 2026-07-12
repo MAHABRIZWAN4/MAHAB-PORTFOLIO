@@ -132,7 +132,9 @@ async def chat_with_agent(request: Request, chat_request: ChatRequest):
         )
 
     except Exception as e:
+        # Log the actual error for debugging
+        print(f"❌ Groq API Error: {type(e).__name__}: {str(e)}")
         raise HTTPException(
             status_code=503,
-            detail="AI service temporarily unavailable"
+            detail=f"AI service temporarily unavailable. Error: {str(e)}"
         )

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Send, Mic, Circle } from "lucide-react";
 import { sendMessage, type AgentResponse } from "@/lib/agent-api";
+import { useTheme } from "next-themes";
 
 interface Message {
   id: string;
@@ -31,6 +32,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 export default function AIAgentPage() {
+  const { theme } = useTheme();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -162,10 +164,7 @@ export default function AIAgentPage() {
   return (
     <div
       id="ai-agent"
-      className="flex flex-col min-h-screen pt-24 pb-8 px-4"
-      style={{
-        background: "linear-gradient(160deg, #0a0e18, #0c1220, #101828)",
-      }}
+      className="flex flex-col min-h-screen pt-24 pb-8 px-4 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-[#0a0e18] dark:via-[#0c1220] dark:to-[#101828]"
     >
       <div className="container mx-auto max-w-7xl flex-1 flex overflow-hidden">
         <div className="grid lg:grid-cols-[30%_70%] gap-6 w-full">
@@ -174,7 +173,7 @@ export default function AIAgentPage() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-[#1e2433] rounded-2xl p-6 flex flex-col gap-6 overflow-y-auto border border-white/5"
+            className="bg-white dark:bg-[#1e2433] rounded-2xl p-6 flex flex-col gap-6 overflow-y-auto border border-gray-200 dark:border-white/5 shadow-lg"
           >
             {/* Avatar */}
             <div className="flex flex-col items-center gap-4">
@@ -188,7 +187,7 @@ export default function AIAgentPage() {
                 MR
               </div>
               <div className="text-center">
-                <h2 className="text-xl font-bold text-white">Mahab Rizwan</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Mahab Rizwan</h2>
                 <div className="flex items-center justify-center gap-2 mt-2">
                   <Circle className="w-2 h-2 fill-green-500 text-green-500" />
                   <span className="text-sm text-green-500">AI Agent Online</span>
@@ -197,7 +196,7 @@ export default function AIAgentPage() {
             </div>
 
             {/* Description */}
-            <p className="text-sm text-gray-300 leading-relaxed text-center">
+            <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed text-center">
               Ask me anything about Mahab — her skills, experience, projects, or how to hire her. I speak 50+ languages including Urdu, Sindhi and English.
             </p>
 
@@ -206,12 +205,7 @@ export default function AIAgentPage() {
               {LANGUAGES.map((lang) => (
                 <span
                   key={lang.name}
-                  className="px-3 py-1 rounded-full text-xs font-medium"
-                  style={{
-                    background: "rgba(99,102,241,0.15)",
-                    color: "#a5b4fc",
-                    border: "1px solid rgba(99,102,241,0.3)",
-                  }}
+                  className="px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/15 dark:text-indigo-300 dark:border-indigo-500/30"
                 >
                   {lang.native}
                 </span>
@@ -219,19 +213,19 @@ export default function AIAgentPage() {
             </div>
 
             {/* Guardrail notice */}
-            <p className="text-xs text-gray-500 text-center mt-auto">
+            <p className="text-xs text-gray-500 dark:text-gray-500 text-center mt-auto">
               This agent only answers questions about Mahab Rizwan
             </p>
 
             {/* Suggested questions */}
             <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-400">Suggested Questions:</h3>
+              <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400">Suggested Questions:</h3>
               <div className="space-y-2">
                 {SUGGESTED_QUESTIONS.map((question, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSuggestedQuestion(question)}
-                    className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-300 hover:bg-white/5 transition-colors border border-white/5 hover:border-indigo-500/30"
+                    className="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors border border-gray-200 dark:border-white/5 hover:border-indigo-500 dark:hover:border-indigo-500/30"
                   >
                     {question}
                   </button>
@@ -245,10 +239,10 @@ export default function AIAgentPage() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-[#1e2433] rounded-2xl flex flex-col h-full overflow-hidden border border-white/5"
+            className="bg-white dark:bg-[#1e2433] rounded-2xl flex flex-col h-full overflow-hidden border border-gray-200 dark:border-white/5 shadow-lg"
           >
             {/* Chat header */}
-            <div className="px-6 py-4 border-b border-white/5">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white"
@@ -259,7 +253,7 @@ export default function AIAgentPage() {
                   MR
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-white">Mahab's AI Agent</h2>
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Mahab's AI Agent</h2>
                   <div className="flex items-center gap-2">
                     <Circle className="w-2 h-2 fill-green-500 text-green-500" />
                     <span className="text-xs text-green-500">Online</span>
@@ -290,20 +284,11 @@ export default function AIAgentPage() {
                       </div>
                     )}
                     <div
-                      className="px-4 py-3 rounded-2xl"
-                      style={
+                      className={`px-4 py-3 rounded-2xl ${
                         message.isUser
-                          ? {
-                              background: "rgba(99,102,241,0.2)",
-                              borderRadius: "14px 14px 4px 14px",
-                              color: "#e0e7ff",
-                            }
-                          : {
-                              background: "#2a3142",
-                              borderRadius: "14px 14px 14px 4px",
-                              color: "#e5e7eb",
-                            }
-                      }
+                          ? "bg-indigo-600 text-white rounded-tr-sm"
+                          : "bg-gray-100 dark:bg-[#2a3142] text-gray-900 dark:text-gray-200 rounded-tl-sm"
+                      }`}
                     >
                       <p className="text-sm leading-relaxed whitespace-pre-wrap">
                         {message.text.split(/(\[Download CV\]\(\/CV_MAHAB_RIZWAN\.pdf\))/).map((part, idx) => {
@@ -345,11 +330,7 @@ export default function AIAgentPage() {
                     MR
                   </div>
                   <div
-                    className="px-4 py-3 rounded-2xl"
-                    style={{
-                      background: "#2a3142",
-                      borderRadius: "14px 14px 14px 4px",
-                    }}
+                    className="px-4 py-3 rounded-2xl bg-gray-100 dark:bg-[#2a3142] rounded-tl-sm"
                   >
                     <div className="flex gap-1">
                       <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
@@ -364,7 +345,7 @@ export default function AIAgentPage() {
             </div>
 
             {/* Input area */}
-            <div className="flex-shrink-0 px-6 py-4 border-t border-white/5">
+            <div className="flex-shrink-0 px-6 py-4 border-t border-gray-200 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <input
                   type="text"
@@ -377,14 +358,14 @@ export default function AIAgentPage() {
                     }
                   }}
                   placeholder="Ask me about Mahab..."
-                  className="flex-1 px-5 py-3 rounded-full bg-[#0a0e18] text-white text-sm outline-none border border-white/10 focus:border-indigo-500 transition-colors"
+                  className="flex-1 px-5 py-3 rounded-full bg-gray-100 dark:bg-[#0a0e18] text-gray-900 dark:text-white text-sm outline-none border border-gray-300 dark:border-white/10 focus:border-indigo-500 transition-colors placeholder:text-gray-500"
                 />
                 <button
                   onClick={handleVoiceInput}
                   className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
                     isListening
                       ? "bg-red-500 text-white animate-pulse border-2 border-red-400"
-                      : "bg-white/5 text-gray-400 hover:bg-white/10 border border-white/15"
+                      : "bg-gray-200 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-white/10 border border-gray-300 dark:border-white/15"
                   }`}
                   title={
                     !recognitionRef.current
