@@ -6,7 +6,7 @@ import { getProjects, getProjectsConfig, type Project, type ProjectsConfig, urlF
 import ScrollToNextButton from "../ui/ScrollToNextButton";
 
 // Default fallbacks
-const defaultCategories = ["All", "AI", "Full Stack", "Backend", "Web3"];
+const defaultCategories = ["All", "AI", "Full Stack", "Backend", "Frontend"];
 const defaultCategoryColors: Record<string, { accent: string; glow: string; tag: string }> = {
   AI:           { accent: "#00ff9d", glow: "rgba(0,255,157,0.15)", tag: "rgba(0,255,157,0.12)" },
   "Full Stack": { accent: "#00c8ff", glow: "rgba(0,200,255,0.15)", tag: "rgba(0,200,255,0.12)" },
